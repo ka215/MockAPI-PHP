@@ -1,188 +1,210 @@
 # MockAPI-PHP
 
-このプロジェクトは、PHP製の軽量なモックAPIサーバーです。  
-開発・テスト環境で実際のAPIを使用せずに、リクエストのシミュレーションが可能です。  
-動的なレスポンスやポーリング機能を簡単に設定でき、環境変数 `.env` を使用した認証制御も可能です。
+This project is a lightweight mock API server built with PHP.  
+It allows request simulation without using real APIs in development and testing environments.  
+It supports dynamic responses, polling functionality, and authentication control using environment variables (`.env`).
+
+<div align="right"><small>
+
+[To Japanese Readme](./README_JP.md)
+
+</small></div>
 
 ---
 
-## 特徴
+## Features
 
-- **エンドポイントの自動登録**
-  - `responses/` 以下のフォルダをスキャンし、ディレクトリ構造に応じたエンドポイントを自動登録。
-  - APIのベースパスを環境変数で設定可能。
-- **レスポンスファイルの動的読み込み**
-  - `.json` → JSONレスポンスとして返却。
-  - `.txt`  → テキストレスポンスとして返却。
-- **ポーリング対応**
-  - `1.json`, `2.json` など複数ファイルを用意すればリクエスト回数に応じてレスポンスを変更できる。
-  - ポーリングはクライアント毎に実行され、 `POST: /reset_polling` リクエストでリセットできる。
-- **カスタムレスポンス**
-  - クエリパラメータ `mock_response` を指定することでレスポンスを動的に切り替え可能。
-    例: `GET /users?mock_response=success` → `responses/users/get/success.json` を取得。
-  - クエリパラメータ `mock_content_type` を指定することでレスポンスの ContentType を指定可能。
-    例: `GET /others?mock_response=xml&mock_content_type=application/xml` → `responses/others/get/xml.txt` をXML形式で取得。
-- **エラーレスポンス**
-  - `responses/errors/404.json` などのエラーレスポンスを定義可能。
-- **レスポンスの遅延**
-  - JSONファイル内に `"mockDelay: 1000"` （例: 1秒）と設定すると応答を遅らせることができる。
-- **カスタムフック**
-  - メソッド+エンドポイントの任意のリクエスト毎にカスタムフックを登録してレスポンス内容をオーバーライドできる。
-    例: `GET /users` のリクエストに対して `hooks/get_users.php` のカスタムフックファイルを実行してレスポンスを制御可能。
-- **ロギング**
-  - `request.log` にリクエスト内容（ヘッダー・クエリ・ボディ）を記録。
-  - `response.log` にレスポンス内容を記録。
-  - リクエストとレスポンスのログはリクエストIDにより紐づけられる。
-  - ログ出力のパスは環境変数で設定可能。
-- **環境変数による設定保存**
-  - `.env` を使い、ポート番号 `PORT` 等の各種環境変数を管理可能。
-  - 環境変数の読み込みには `vlucas/phpdotenv` を使用。
-  - 一時ファイル（`cookies.txt` など）の保存ディレクトリ `TEMP_DIR` を `.env` で指定可能。
+- **Automatic Endpoint Registration**
+  - Scans the `responses/` folder and automatically registers endpoints based on the directory structure.
+  - The API base path can be configured via environment variables.
+  - Supports dynamic parameter parsing such as `GET users/{group}/{limit}`.
+- **Dynamic Response Loading**
+  - `.json` → Returns JSON response.
+  - `.txt` → Returns plain text response.
+- **Polling Support**
+  - If multiple files such as `1.json`, `2.json`, etc., are prepared, responses will change based on request count.
+  - Polling is executed per client, and can be reset via `POST: /reset_polling`.
+- **Custom Responses**
+  - Use query parameter `mock_response` to dynamically switch responses.
+    Example: `GET /users?mock_response=success` → Returns `responses/users/get/success.json`.
+  - Use `mock_content_type` to specify response `Content-Type`.
+    Example: `GET /others?mock_response=xml&mock_content_type=application/xml` → Returns `responses/others/get/xml.txt` as XML format.
+- **Error Responses**
+  - Define error responses such as `responses/errors/404.json`.
+- **Response Delay**
+  - Specify `"mockDelay": 1000` (1 second) in a JSON response file to delay the response.
+- **Custom Hooks**
+  - Register custom hooks for each method + endpoint request to override response content.
+    Example: `GET /users` request can be handled by a custom hook `hooks/get_users.php`.
+- **Logging**
+  - `request.log` stores request details (headers, query, body).
+  - `response.log` stores response details.
+  - `auth.log` stores authentication failures, and `error.log` stores generic errors.
+  - All logs are linked by a request ID for traceability.
+- **Configuration via Environment Variables**
+  - Uses `vlucas/phpdotenv` to read environment variables.
+  - `.env` can define server settings such as `PORT`, base API path, temporary file storage (`cookies.txt`, etc.), and logging paths.
+  - Simple authentication via `API_KEY` and `CREDENTIAL`.
 
-## ディレクトリ構成
+## Directory Structure
 
-以下 `responses` ディレクトリ内はあくまで参考例です。利用ケースに準じて自由にカスタマイズ可能です。
+Below is an example structure of the `responses` directory. You can freely customize it based on your use case.
 ```
 mock_api_server/
- ├── index.php             # モックサーバーのメインスクリプト
- ├── http_status.php       # HTTPステータスコードの定義
- ├── start_server.php      # ローカルサーバー起動スクリプト
- ├── .env                  # 設定用（ .env.sample を参考に設定）
- ├── vendor/               # Composer のパッケージ
- ├── composer.json         # PHPパッケージ管理用
- ├── composer.lock         # Composer のロックファイル
- ├── responses/            # レスポンスデータ格納ディレクトリ（下記は初期バンドル構成）
+ ├── index.php             # Main script for the mock server
+ ├── http_status.php       # HTTP status code definitions
+ ├── start_server.php      # Local server startup script
+ ├── .env                  # Configuration file (.env.sample provides a template)
+ ├── vendor/               # Composer packages
+ ├── composer.json         # PHP package manager configuration
+ ├── composer.lock         # Composer lock file
+ ├── responses/            # Directory for storing response data
  │   ├── users/
  │   │   ├── get/
- │   │   │   ├── 1.json        # 1回目のリクエスト用レスポンス
- │   │   │   ├── 2.json        # 2回目のリクエスト用レスポンス
- │   │   │   ├── default.json  # デフォルトレスポンス
- │   │   │   └── delay.json    # 遅延レスポンス
+ │   │   │   ├── 1.json        # First request response
+ │   │   │   ├── 2.json        # Second request response
+ │   │   │   ├── default.json  # Default response
+ │   │   │   └── delay.json    # Delayed response
+ │   │   ├── delete/
+ │   │   │   └── default.json  # DELETE response
  │   │   └── post/
- │   │        ├── 400.json      # 400エラーのレスポンス
- │   │        ├── failed.json   # POST失敗時のレスポンス
- │   │        └── success.json  # POST成功時のレスポンス
+ │   │        ├── 400.json      # 400 error response
+ │   │        ├── failed.json   # Failed POST response
+ │   │        └── success.json  # Successful POST response
  │   ├── errors/
- │   │   ├── 404.json           # 404エラーレスポンス（JSON形式）
- │   │   └── 500.txt            # 500エラーのレスポンス（テキスト形式）
+ │   │   ├── 404.json           # 404 error response (JSON format)
+ │   │   └── 500.txt            # 500 error response (text format)
  │   └── others/
+ │        ├── products/
+ │        │   └── put/
+ │        │        └── default.json # PUT response
  │        └── get/
- │             ├── default.txt   # CSV形式のテキストデータ
- │             └── userlist.txt  # XML形式のテキストデータ
- ├── hooks/                # カスタムフック格納ディレクトリ
- ├── tests/                # ユニットテスト用のテストケース格納ディレクトリ
- │   └── MockApiTest.php   # 初期テストケース
- ├── phpunit.xml           # ユニットテスト設定ファイル
- └── logs/                 # ログ保存ディレクトリ（.envで変更可能）
-      ├── request.log      # リクエストのログ
-      └── response.log     # レスポンスのログ
+ │             ├── default.txt   # CSV data as text
+ │             └── userlist.txt  # XML data as text
+ ├── hooks/                # Custom hook scripts
+ ├── tests/                # Unit test cases
+ │   └── MockApiTest.php   # Initial test cases
+ ├── phpunit.xml           # PHPUnit configuration file
+ ├── version.json          # Version information file
+ └── logs/                 # Directory for log storage
+      ├── auth.log         # Authentication error logs
+      ├── error.log        # General error logs
+      ├── request.log      # Request logs
+      └── response.log     # Response logs
 ```
 
-## 使い方
+## Usage
 
-1. #### Composer のインストール
+1. #### Install Dependencies via Composer
     ```bash
     composer install
     ```
-2. #### サーバーの起動方法
-    Mock API Server を起動するには、以下のいずれかの方法を利用してください。
-    ##### 推奨: `start_server.php` を使用
-    このスクリプトを使うと、環境変数 `.env` で指定した `PORT` を自動で反映し、`temp/` 内の `.txt` ファイルもクリアされます。
+2. #### Starting the Mock API Server
+    The mock API server can be started using the following methods.
+    ##### Recommended: Using `start_server.php`
+    This script automatically applies the `PORT` specified in `.env` and clears temporary files.
     ```bash
     php start_server.php
     ```
-    ##### 手動で PHP 内蔵サーバーを起動
+    ##### Manually Using PHP Built-in Server
     ```bash
     php -S localhost:3030 -t .
     ```
-3. #### APIリクエスト例
-    - **GETリクエスト**
+3. #### API Request Examples
+    - **GET Request**
       ```bash
       curl -X GET http://localhost:3030/api/users
       ```
-    - **GETリクエスト（ポーリング対応）**
+    - **Polling Enabled GET Request**
       ```bash
       curl -b temp/cookies.txt -c temp/cookies.txt -X GET http://localhost:3030/api/users
       ```
-    - **POSTリクエスト**
+    - **POST Request**
       ```bash
       curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
       ```
-    - **PUTリクエスト（データ更新）**
-      ```bash
-      curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
-      ```
-    - **DELETEリクエスト**
+    - **DELETE Request**
       ```bash
       curl -X DELETE http://localhost:3030/api/users/1
       ```
-    - **カスタムレスポンス**
+    - **Custom Response Request**
       ```bash
       curl -X GET "http://localhost:3030/api/users?mock_response=success"
       ```
-4. #### `responses/` の設定方法
-    モックAPIのレスポンスは `responses/` ディレクトリ内に JSON もしくはテキストファイルとして保存します。
-    - **レスポンスの構成例**
+    - **Check Version**
+      ```bash
+      curl -X GET http://localhost:3030/api/version
+      ```
+4. #### `responses/` Configuration
+    The mock API responses are stored as JSON or text files in the `responses/` directory.
+
+    - **Example Response Structure**
       ```
       responses/
       ├── products/
       │   ├── get/
-      │   │   ├── default.json # デフォルトレスポンス（3～8回目と10回目以降のレスポンス）
-      │   │   ├── 1.json # 1回目のリクエストで返すレスポンス
-      │   │   ├── 2.json # 2回目のリクエストで返すレスポンス
-      │   │   └── 9.json # 9回目のリクエストで返すレスポンス
+      │   │   ├── default.json # Default response (used for 3rd to 8th requests and from the 10th request onward)
+      │   │   ├── 1.json # Response for the 1st request
+      │   │   ├── 2.json # Response for the 2nd request
+      │   │   └── 9.json # Response for the 9th request
       │   ├── post/
-      │   │   ├── success.json # Product作成成功時のレスポンス
-      │   │   └── 400.json # バリデーションエラー時のレスポンス
+      │   │   ├── success.json # Response for a successful product creation
+      │   │   └── 400.json # Response for a validation error
       │   ├── patch/
-      │   │   └── success.json # Product更新成功時のレスポンス
+      │   │   └── success.json # Response for a successful product update
       │   ├── delete/
-      │   │   └── success.json # Product削除成功時のレスポンス
+      │   │   └── success.json # Response for a successful product deletion
       │   └─…
       └─…
       ```
-    - **エラーレスポンスの設定**
-      例: `responses/errors/404.json`
+
+    - **Error Response Configuration**
+      Example: `responses/errors/404.json`
       ```json
       {
         "error": "Resource not found",
         "code": 404
       }
       ```
-      例: `responses/errors/500.txt`
+      Example: `responses/errors/500.txt`
       ```
       Internal Server Error
       ```
 
-## 環境変数（.env 設定）
+## Environment Variables (.env Configuration)
 
-プロジェクト内の `.env` に環境変数を設定することで、各種動作をカスタマイズできます。
-パッケージにバンドルされている `.env.sample` がテンプレートとなります。
+You can customize various settings by configuring environment variables in the `.env` file.  
+A template `.env.sample` is included in the package.
+
 ```env
-PORT=3030             # モックAPIサーバーのポート番号
-BASE_PATH=/api        # APIのベースパス（例: /api）
-LOG_DIR=./logs        # ログ出力ディレクトリ
-TEMP_DIR=./temp       # 一時ファイル（cookies.txtなど）の保存ディレクトリ
-TIMEZONE=             # ロギング時のタイムゾーン（デフォルトはUTC）
-API_KEY=              # 認証用APIキー（アプリケーション単位の簡易的な認証用で長期間有効）
-CREDENCIAL=           # 資格情報（ユーザー単位等の単体認証用の期限付きトークン）
+PORT=3030             # Port number for the mock API server
+BASE_PATH=/api        # Base path for the API (e.g., /api/v1)
+LOG_DIR=./logs        # Directory for log output
+TEMP_DIR=./temp       # Directory for temporary files (e.g., cookies.txt)
+TIMEZONE=             # Timezone for logging (default is UTC)
+API_KEY=              # API key for authentication (long-term authentication for the application)
+CREDENTIAL=           # Credential (temporary token for individual user authentication)
 ```
-※ API_KEYとCREDENCIALオプションは本プロジェクトでは簡易的な実装となっており、指定時はリクエストのAuthorizationヘッダからBearerトークンを取得して認証処理が行われます。
+
+Note: The `API_KEY` and `CREDENTIAL` options are implemented as a simple authentication mechanism.
+If specified, the server will extract the Bearer token from the Authorization header and perform authentication.
 
 ## Tips
 
-### カスタムレスポンス
-クエリパラメータ `mock_response` を指定することで、動的にレスポンスを変更できます。
-| リクエスト | 取得されるレスポンスファイル |
-|------------|------------------------------|
+### Custom Responses
+You can dynamically change the response by specifying the `mock_response` query parameter.
+
+| Request | Response File Retrieved |
+|---------|-------------------------|
 | `GET /users` | `responses/users/get/default.json` |
 | `GET /users?mock_response=success` | `responses/users/get/success.json` |
 | `POST /users?mock_response=failed` | `responses/users/post/failed.json` |
 | `POST /users?mock_response=400` | `responses/users/post/400.json` |
 
-### レスポンスの遅延
-JSON ファイル内に `mockDelay` を設定すると、レスポンスを遅延できます。
-`responses/users/get/default.json`
+### Response Delay
+You can set a delay in the response by specifying `mockDelay` in the JSON file.
+
+Example: `responses/users/get/default.json`
 ```json
 {
     "id": 1,
@@ -190,36 +212,36 @@ JSON ファイル内に `mockDelay` を設定すると、レスポンスを遅�
     "mockDelay": 1000
 }
 ```
-→ 1秒後にレスポンスが返る
+→ The response will be returned after 1 second.
 
-### クエリパラメータの取り扱い
-- クエリパラメータは全て取得され、リクエストデータ（ `request_data['query_params']` ）に含まれます。
-- `mock_response` と `mock_content_type` は内部で処理されるため、リクエストデータには含まれません。
-- 例: `GET /users?filter=name&sort=asc` の場合、リクエストデータは以下のようになります：
-  ```json
-  {
-    "query_params": {
-      "filter": "name",
-      "sort": "asc"
-    },
-    "body": {}
-  }
-  ```
+### Handling Query Parameters
+- All query parameters are retrieved and included in the request data (`request_data['query_params']`).
+- `mock_response` and `mock_content_type` are handled internally and will not be included in the request data.
+- Example: For `GET /users?filter=name&sort=asc`, the request data will be:
+```json
+{
+  "query_params": {
+    "filter": "name",
+    "sort": "asc"
+  },
+  "body": {}
+}
+```
 
-### カスタム `Content-Type` の設定
-デフォルトのレスポンスは `application/json` もしくは `text/plain` ですが、任意の `Content-Type` を指定することも可能です。
+### Custom `Content-Type` Setting
+By default, responses are returned as `application/json` or `text/plain`, but you can specify any `Content-Type`.
 
-#### CSVファイルを返す場合
-レスポンスとして `responses/others/get/default.txt` を登録（内容は下記参照）。
+#### Returning a CSV File
+Register the response as `responses/others/get/default.txt` (content example below):
 ```csv
 id,name,email
 1,John Doe,john@example.com
 2,Jane Doe,jane@example.com
 ```
-リクエストとして `GET others?mock_content_type=text/csv` を呼び出すことで `others.csv` が取得できます（ダウンロードされます）。
+Making a request with `GET others?mock_content_type=text/csv` will return `others.csv` (downloadable if accessed via a browser).
 
-#### XMLファイルを返す場合
-レスポンスとして `responses/others/get/userlist.txt` を登録（内容は下記参照）。
+#### Returning an XML File
+Register the response as `responses/others/get/userlist.txt` (content example below):
 ```xml
 <users>
     <user>
@@ -232,19 +254,19 @@ id,name,email
     </user>
 </users>
 ```
-リクエストとして `GET others?mock_response=userlist&mock_content_type=application/xml` を呼び出すことでXML形式のデータを取得できます。
+Making a request with `GET others?mock_response=userlist&mock_content_type=application/xml` will return XML-formatted data.
 
-### カスタムフック
-特定のメソッド+エンドポイントに対して既定のレスポンスを返す前にカスタム処理をフックさせることができる機能です。
-`hooks/{メソッド}_{エンドポイントのスネークケース文字列}.php` のファイルを設置することで有効化されます。
-例: `GET users` のエンドポイント用カスタムフック `hooks/get_users.php`
+### Custom Hooks
+This feature allows you to override the predefined response for a specific method + endpoint by using custom hooks. By placing a PHP file in `hooks/{METHOD}_{SNAKE_CASE_ENDPOINT}.php`, you can enable a custom hook.
+
+Example: Custom hook for the `GET users` endpoint `hooks/get_users.php`
 ```php
 <?php
 
-// 例: GET メソッドでエンドポイントが `/users` の場合にフック
+// Example: Hook for GET /users
 if (isset($request_data['query_params'])) {
     $filter = $request_data['query_params']['filter'] ?? null;
-    // クエリパラメータに `filter` が指定されていた場合
+    // If the `filter` query parameter is specified
     if ($filter) {
         $sort = strtolower($request_data['query_params']['sort']) === 'desc' ? 'desc' : 'asc';
         header('Content-Type: application/json');
@@ -262,12 +284,12 @@ if (isset($request_data['query_params'])) {
                 ],
             ],
         ]);
-        // レスポンスを返したらスクリプトを終了
+        // Terminate script after returning response
         exit;
     }
 }
 ```
-`GET users?filter=name` のクエリパラメータが付与されたリクエストの場合のみ下記のレスポンスが取得できます。
+For a request like `GET users?filter=name`, the following response will be returned:
 ```json
 {
   "data": [
@@ -285,21 +307,78 @@ if (isset($request_data['query_params'])) {
 }
 ```
 
-## ユニットテスト
+### Dynamic Parameters
+For requests with dynamic parameters such as `GET users/{group}/{limit}`, parameters are extracted as request parameters if the response root exists at `responses/users/get`. You can use custom hooks to control responses using these extracted parameters.
 
-このプロジェクトの基本的な動作についてはユニットテストを定義しています。
-必要に応じてテストケース（ `tests/MockApiTest.php` ）を拡張することでテストを追加することが可能です。
+Example: Custom hook for the `GET users` endpoint `hooks/get_users.php`
+```php
+<?php
 
-**テストの実行:**
-```bash
-php vender/bin/phpunit
+// Example: Hook for dynamic parameters in `GET /users/{group}/{limit}`
+$pattern = '/^dynamicParam\d+$/';
+$matchingKeys = preg_grep($pattern, array_keys($request_data));
+if (!empty($matchingKeys)) {
+    // Extract dynamic parameters
+    $filteredArray = array_filter($request_data, function ($key) use ($pattern) {
+        return preg_match($pattern, $key);
+    }, ARRAY_FILTER_USE_KEY);
+    extract($filteredArray);
+    $group = isset($dynamicParam1) ? $dynamicParam1 : 'default';
+    $limit = isset($dynamicParam2) ? (int) $dynamicParam2 : 0;
+
+    header('Content-Type: application/json');
+    $response = [
+        'group' => $group,
+        'limit' => $limit,
+        'users' => [],
+    ];
+    for ($i = 1; $i <= $limit; $i++) {
+        $response['users'][] = [
+            'id' => $i,
+            'name' => "User {$i} (Group: {$group})",
+        ];
+    }
+    echo json_encode($response, JSON_PRETTY_PRINT);
+    exit;
+}
+```
+For a request like GET `users/groupA/3`, the following response will be returned:
+```json
+{
+    "group": "groupA",
+    "limit": 3,
+    "users": [
+        {
+            "id": 1,
+            "name": "User 1 (Group: groupA)"
+        },
+        {
+            "id": 2,
+            "name": "User 2 (Group: groupA)"
+        },
+        {
+            "id": 3,
+            "name": "User 3 (Group: groupA)"
+        }
+    ]
+}
 ```
 
-## ライセンス
+## Unit Tests
 
-このプロジェクトは [MIT License](LICENSE) のもとで公開されています。
+Basic functionality is covered by unit tests.  
+Additional test cases can be added in `tests/MockApiTest.php`.
+
+**Run Tests:**
+```bash
+php vendor/bin/phpunit
+```
+
+## License
+
+This project is released under the [MIT License](LICENSE).
 
 ## Author
 
-- **名前**: Katsuhiko Maeno
-- **GitHub**: [github.com/ka215](https://github.com/ka215)  
+- **Name**: Katsuhiko Maeno
+- **GitHub**: [github.com/ka215](https://github.com/ka215)
