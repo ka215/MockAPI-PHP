@@ -10,11 +10,10 @@ This project is a lightweight mock API server built with PHP.
 It allows request simulation without using real APIs in development and testing environments.  
 It supports dynamic responses, polling functionality, and authentication control using environment variables (`.env`).
 
-<div align="right"><small>
-
-[To Japanese Readme](./README_JP.md)
-
-</small></div>
+<div align="right"><a href="./README_JP.md">
+<img src="https://ka215.github.io/MockAPI-PHP/assets/language-translation.svg" height="16" width="16" alt="To Japanese README" />
+Japanese
+</a></div>
 
 ---
 
