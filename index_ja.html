@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MockAPI-PHP</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite (UI components) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.1/flowbite.min.js"></script>
+
+    <style>
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .badge-container img {
+            margin-right: 5px;
+        }
+        .icon-language-translation {
+            width: 1em;
+            height: 1em;
+            color: white !important;
+        }
+        .navi-link {
+            transition: color 0.2s ease-in-out;
+        }
+        .navi-link:hover span {
+            color: #E3A008 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+<!-- ヘッダー -->
+<header class="p-6 bg-blue-500 dark:bg-blue-700 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MockAPI-PHP</h1>
+        <div class="flex items-center gap-4">
+            <!-- 言語切り替え -->
+            <a href="index.html" class="flex items-center gap-1 text-white navi-link">
+                <span class="icon-language-translation" title="To English README">
+                    <svg fill="currentColor" width="1em" height="1em" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M39,18.67H35.42l-4.2,11.12A29,29,0,0,1,20.6,24.91a28.76,28.76,0,0,0,7.11-14.49h5.21a2,2,0,0,0,0-4H19.67V2a2,2,0,1,0-4,0V6.42H2.41a2,2,0,0,0,0,4H7.63a28.73,28.73,0,0,0,7.1,14.49A29.51,29.51,0,0,1,3.27,30a2,2,0,0,0,.43,4,1.61,1.61,0,0,0,.44-.05,32.56,32.56,0,0,0,13.53-6.25,32,32,0,0,0,12.13,5.9L22.83,52H28l2.7-7.76H43.64L46.37,52h5.22Zm-15.3-8.25a23.76,23.76,0,0,1-6,11.86,23.71,23.71,0,0,1-6-11.86Zm8.68,29.15,4.83-13.83L42,39.57Z"/>
+                    </svg>
+                </span>
+                <span class="ml-1 hover:underline">English</span>
+            </a>
+            <!-- GitHub リンク -->
+            <a href="https://github.com/ka215/MockAPI-PHP" class="text-white navi-link">
+                <span class="hover:underline">GitHub</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- メインコンテンツ -->
+<main class="container mx-auto p-6">
+    <!-- バッジ -->
+    <div class="badge-container flex flex-wrap justify-center mb-6">
+        <img src="https://img.shields.io/badge/PHP-8.2%2B-blue.svg" alt="PHPバージョン">
+        <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="ライセンス">
+        <img src="https://img.shields.io/github/v/release/ka215/MockAPI-PHP" alt="最新リリース">
+        <img src="https://img.shields.io/github/issues/ka215/MockAPI-PHP" alt="GitHubの課題">
+        <img src="https://img.shields.io/github/last-commit/ka215/MockAPI-PHP" alt="最終コミット">
+    </div>
+
+    <p class="text-center">
+        このプロジェクトは PHP 製の軽量なモック API サーバーです。<br>
+        開発・テスト環境で実際の API を使用せずにリクエストのシミュレーションが可能です。<br>
+        動的レスポンス、ポーリング機能、環境変数 (<code>.env</code>) を使用した認証制御に対応しています。
+    </p>
+
+    <!-- 特徴 -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">特徴</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li><strong>エンドポイントの自動登録</strong> - <code>responses/</code> フォルダをスキャンして自動登録。</li>
+            <li><strong>動的レスポンスの読み込み</strong> - JSON やテキストレスポンスに対応。</li>
+            <li><strong>ポーリング対応</strong> - リクエスト回数に応じたレスポンス変更。</li>
+            <li><strong>カスタムレスポンス</strong> - クエリパラメータでレスポンスを切り替え可能。</li>
+            <li><strong>エラーレスポンス</strong> - 404 などのエラーレスポンスを定義可能。</li>
+            <li><strong>レスポンス遅延</strong> - 遅延レスポンスに対応。</li>
+            <li><strong>カスタムフック</strong> - 任意のレスポンスを動的にオーバーライド可能。</li>
+            <li><strong>ログ出力</strong> - リクエストやエラーログを記録。</li>
+            <li><strong>環境変数設定</strong> - <code>vlucas/phpdotenv</code> による設定管理。</li>
+        </ul>
+    </section>
+
+    <!-- ディレクトリ構成 -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">ディレクトリ構成</h2>
+        <pre class="bg-gray-800 text-white p-4 rounded mt-4">
+mock_api_server/
+ ├── index.php             # メインスクリプト
+ ├── start_server.php      # ローカルサーバー起動スクリプト
+ ├── .env                  # 環境設定ファイル
+ ├── responses/            # レスポンス用ディレクトリ
+ │   ├── users/
+ │   │   ├── get/
+ │   │   │   ├── 1.json    # 初回リクエスト時のレスポンス
+ │   │   │   ├── 2.json    # 2回目リクエスト時のレスポンス
+ │   │   │   ├── default.json
+ │   │   │   ├── delay.json
+ │   │   ├── delete/
+ │   │   │   ├── default.json
+ │   ├── errors/
+ │   │   ├── 404.json
+ │   │   ├── 500.txt
+ ├── hooks/                # カスタムフック
+ ├── logs/                 # ログ保存ディレクトリ
+ └── tests/                # ユニットテスト用
+        </pre>
+    </section>
+
+    <!-- 必要環境 -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">必要環境</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li>PHP <strong>8.2+</strong> (PHPUnit 12.x を使用しない場合は 8.1+ でも可)</li>
+            <li>Composer</li>
+        </ul>
+    </section>
+
+    <!-- ドキュメント -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">ドキュメント</h2>
+        <p class="mt-4">詳細については、<a href="https://raw.githubusercontent.com/ka215/MockAPI-PHP/refs/heads/main/README_JP.md" class="text-blue-500 hover:underline">README_JP.md</a> を参照してください。</p>
+    </section>
+
+    <!-- ライセンス・著者 -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">ライセンス</h2>
+        <p class="mt-4">このプロジェクトは <a href="https://raw.githubusercontent.com/ka215/MockAPI-PHP/refs/heads/main/LICENSE" class="text-blue-500 hover:underline">MIT ライセンス</a> のもとで公開されています。</p>
+    </section>
+
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">著者</h2>
+        <p class="mt-4"><strong>名前:</strong> Katsuhiko Maeno</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/ka215" class="text-blue-500 hover:underline">github.com/ka215</a></p>
+    </section>
+</main>
+
+<!-- darkmode-js -->
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script>new Darkmode({ bottom: '20px', right: '20px', left: 'unset', time: '0.3s', mixColor: '#fff', backgroundColor: '#fff', buttonColorDark: '#3f3f46', buttonColorLight: '#f4f4f5', saveInCookies: false, label: '🌓', autoMatchOsTheme: true }).showWidget()</script>
+
+</body>
+</html>

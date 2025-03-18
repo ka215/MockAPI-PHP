@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MockAPI-PHP</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite (UI components) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.1/flowbite.min.js"></script>
+
+    <style>
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .badge-container img {
+            margin-right: 5px;
+        }
+        .icon-language-translation {
+            width: 1em;
+            height: 1em;
+            color: white !important;
+        }
+        .navi-link {
+            transition: color 0.2s ease-in-out;
+        }
+        .navi-link:hover span {
+            color: #E3A008 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+<!-- Header -->
+<header class="p-6 bg-blue-500 dark:bg-blue-700 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MockAPI-PHP</h1>
+        <div class="flex items-center gap-4">
+            <!-- Language Switch -->
+            <a href="index_ja.html" class="flex items-center gap-1 text-white navi-link">
+                <span class="icon-language-translation" title="To Japanese README">
+                    <svg fill="currentColor" width="1em" height="1em" viewBox="0 0 52 52" data-name="Language Translation" id="language-translation" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M39,18.67H35.42l-4.2,11.12A29,29,0,0,1,20.6,24.91a28.76,28.76,0,0,0,7.11-14.49h5.21a2,2,0,0,0,0-4H19.67V2a2,2,0,1,0-4,0V6.42H2.41a2,2,0,0,0,0,4H7.63a28.73,28.73,0,0,0,7.1,14.49A29.51,29.51,0,0,1,3.27,30a2,2,0,0,0,.43,4,1.61,1.61,0,0,0,.44-.05,32.56,32.56,0,0,0,13.53-6.25,32,32,0,0,0,12.13,5.9L22.83,52H28l2.7-7.76H43.64L46.37,52h5.22Zm-15.3-8.25a23.76,23.76,0,0,1-6,11.86,23.71,23.71,0,0,1-6-11.86Zm8.68,29.15,4.83-13.83L42,39.57Z"/>
+                    </svg>
+                </span>
+                <span class="ml-1 hover:underline">Japanese</span>
+            </a>
+            <!-- GitHub Link -->
+            <a href="https://github.com/ka215/MockAPI-PHP" class="text-white navi-link">
+                <span class="hover:underline">GitHub</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mx-auto p-6">
+    <!-- Badges -->
+    <div class="badge-container flex flex-wrap justify-center mb-6">
+        <img src="https://img.shields.io/badge/PHP-8.2%2B-blue.svg" alt="PHP Version">
+        <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+        <img src="https://img.shields.io/github/v/release/ka215/MockAPI-PHP" alt="GitHub release">
+        <img src="https://img.shields.io/github/issues/ka215/MockAPI-PHP" alt="GitHub issues">
+        <img src="https://img.shields.io/github/last-commit/ka215/MockAPI-PHP" alt="GitHub last commit">
+    </div>
+
+    <p class="text-center">
+        This project is a lightweight mock API server built with PHP.<br>
+        It allows request simulation without using real APIs in development and testing environments.<br>
+        Supports dynamic responses, polling functionality, and authentication control using environment variables (<code>.env</code>).
+    </p>
+
+    <!-- Features Section -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">Features</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li><strong>Automatic Endpoint Registration</strong> - Scans the <code>responses/</code> folder and registers endpoints.</li>
+            <li><strong>Dynamic Response Loading</strong> - Supports JSON and text responses.</li>
+            <li><strong>Polling Support</strong> - Changes responses based on request count.</li>
+            <li><strong>Custom Responses</strong> - Uses query parameters for response switching.</li>
+            <li><strong>Error Responses</strong> - Predefined error messages (e.g., 404).</li>
+            <li><strong>Response Delay</strong> - Supports delayed responses.</li>
+            <li><strong>Custom Hooks</strong> - Allows overriding responses dynamically.</li>
+            <li><strong>Logging</strong> - Logs requests, responses, authentication, and errors.</li>
+            <li><strong>Environment Variable Configuration</strong> - Uses <code>vlucas/phpdotenv</code> for settings.</li>
+        </ul>
+    </section>
+
+    <!-- Directory Structure -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">Directory Structure</h2>
+        <pre class="bg-gray-800 text-white p-4 rounded mt-4">
+mock_api_server/
+ ├── index.php             # Main script
+ ├── start_server.php      # Local server startup
+ ├── .env                  # Configuration file
+ ├── responses/            # Directory for responses
+ │   ├── users/
+ │   │   ├── get/
+ │   │   │   ├── 1.json    # First request response
+ │   │   │   ├── 2.json    # Second request response
+ │   │   │   ├── default.json
+ │   │   │   ├── delay.json
+ │   │   ├── delete/
+ │   │   │   ├── default.json
+ │   ├── errors/
+ │   │   ├── 404.json
+ │   │   ├── 500.txt
+ ├── hooks/                # Custom hooks
+ ├── logs/                 # Log storage
+ └── tests/                # Unit tests
+        </pre>
+    </section>
+
+    <!-- Requirements -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">Requirements</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li>PHP <strong>8.2+</strong> (8.1+ if not using PHPUnit 12.x)</li>
+            <li>Composer</li>
+        </ul>
+    </section>
+
+    <!-- Documentaion -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">Documentation</h2>
+        <p class="mt-4">For more information, please refer to the <a href="https://raw.githubusercontent.com/ka215/MockAPI-PHP/refs/heads/main/README.md" class="text-blue-500 hover:underline">README.md</a> file.</p>
+    </section>
+
+    <!-- License & Author -->
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">License</h2>
+        <p class="mt-4">This project is released under the <a href="https://raw.githubusercontent.com/ka215/MockAPI-PHP/refs/heads/main/LICENSE" class="text-blue-500 hover:underline">MIT License</a>.</p>
+    </section>
+
+    <section class="mt-8">
+        <h2 class="text-xl font-bold border-b pb-2">Author</h2>
+        <p class="mt-4"><strong>Name:</strong> Katsuhiko Maeno</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/ka215" class="text-blue-500 hover:underline">github.com/ka215</a></p>
+    </section>
+</main>
+
+<!-- darkmode-js -->
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script>new Darkmode({ bottom: '20px', right: '20px', left: 'unset', time: '0.3s', mixColor: '#fff', backgroundColor: '#fff', buttonColorDark: '#3f3f46', buttonColorLight: '#f4f4f5', saveInCookies: false, label: '🌓', autoMatchOsTheme: true }).showWidget()</script>
+
+</body>
+</html>
