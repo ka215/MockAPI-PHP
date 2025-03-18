@@ -10,11 +10,10 @@
 開発・テスト環境で実際のAPIを使用せずに、リクエストのシミュレーションが可能です。  
 動的なレスポンスやポーリング機能を簡単に設定でき、環境変数 `.env` を使用した認証制御も可能です。
 
-<div align="right"><small>
-
-[To English Readme](./README.md)
-
-</small></div>
+<div align="right"><a href="./README.md">
+<object type="image/svg+xml" data="https://ka215.github.io/MockAPI-PHP/assets/language-translation.svg" height="16" width="16" alt="To English README"></object>
+English
+</a></div>
 
 ---
 
