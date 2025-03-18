@@ -26,9 +26,11 @@ jobs:
       - name: Composerで依存関係をインストール
         run: composer install --no-progress --no-suggest --prefer-dist
 
+      - name: Set permissions for the directory
+        run: sudo chmod -R 755 /home/runneradmin
+
       - name: 静的解析（PHPStan）
-        run: vendor/bin/phpstan analyse --memory-limit=512M .
-        working-directory: /home/runner/work/MockAPI-PHP/MockAPI-PHP
+        run: vendor/bin/phpstan analyse --memory-limit=512M
 
       - name: コードスタイルチェック（PHPCS）
         run: vendor/bin/phpcs --standard=PSR12 .
