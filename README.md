@@ -1,5 +1,11 @@
 # MockAPI-PHP
 
+![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub release](https://img.shields.io/github/v/release/ka215/MockAPI-PHP)
+![GitHub issues](https://img.shields.io/github/issues/ka215/MockAPI-PHP)
+![GitHub last commit](https://img.shields.io/github/last-commit/ka215/MockAPI-PHP)
+
 This project is a lightweight mock API server built with PHP.  
 It allows request simulation without using real APIs in development and testing environments.  
 It supports dynamic responses, polling functionality, and authentication control using environment variables (`.env`).
@@ -92,6 +98,11 @@ mock_api_server/
       ├── request.log      # Request logs
       └── response.log     # Response logs
 ```
+
+## Requirements
+
+- PHP **8.2+** (If you do not use phpunit v12.x, PHP **8.1+** is also possible.)
+- Composer
 
 ## Usage
 

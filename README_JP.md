@@ -1,5 +1,11 @@
 # MockAPI-PHP
 
+![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub release](https://img.shields.io/github/v/release/ka215/MockAPI-PHP)
+![GitHub issues](https://img.shields.io/github/issues/ka215/MockAPI-PHP)
+![GitHub last commit](https://img.shields.io/github/last-commit/ka215/MockAPI-PHP)
+
 このプロジェクトは、PHP製の軽量なモックAPIサーバーです。  
 開発・テスト環境で実際のAPIを使用せずに、リクエストのシミュレーションが可能です。  
 動的なレスポンスやポーリング機能を簡単に設定でき、環境変数 `.env` を使用した認証制御も可能です。
@@ -93,6 +99,11 @@ mock_api_server/
       ├── request.log      # リクエストのログ
       └── response.log     # レスポンスのログ
 ```
+
+## 動作環境
+
+- PHP **8.2以上** (phpunit v12.x でのテストを利用しない場合は PHP **8.1以上** でも可能)
+- Composer
 
 ## 使い方
 
