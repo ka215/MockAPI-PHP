@@ -30,7 +30,7 @@ jobs:
         run: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=512M
 
       - name: コードスタイルチェック（PHPCS）
-        run: vendor/bin/phpcs --standard=PSR12 ./
+        run: vendor/bin/phpcs --standard=phpcs.xml.dist
 
       - name: 自動テスト実行（PHPUnit）
         run: vendor/bin/phpunit
