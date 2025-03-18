@@ -27,12 +27,12 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist
 
       - name: 静的解析（PHPStan）
-        run: vendor/bin/phpstan analyse --memory-limit=512M
-        working-directory: ./
+        run: vendor/bin/phpstan analyse --memory-limit=512M .
+        working-directory: /home/runner/work/MockAPI-PHP/MockAPI-PHP
 
       - name: コードスタイルチェック（PHPCS）
-        run: vendor/bin/phpcs --standard=PSR12
-        working-directory: ./
+        run: vendor/bin/phpcs --standard=PSR12 .
+        working-directory: /home/runner/work/MockAPI-PHP/MockAPI-PHP
 
       - name: 自動テスト実行（PHPUnit）
         run: vendor/bin/phpunit
