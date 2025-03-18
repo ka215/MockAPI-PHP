@@ -30,10 +30,10 @@ jobs:
         run: cd /home/runner/work/MockAPI-PHP/MockAPI-PHP
 
       - name: 静的解析（PHPStan）
-        run: vendor/bin/phpstan analyse --memory-limit=512M
+        run: vendor/bin/phpstan analyse --memory-limit=512M ./
 
       - name: コードスタイルチェック（PHPCS）
-        run: vendor/bin/phpcs --standard=PSR12
+        run: vendor/bin/phpcs --standard=PSR12 ./
 
       - name: 自動テスト実行（PHPUnit）
         run: vendor/bin/phpunit
