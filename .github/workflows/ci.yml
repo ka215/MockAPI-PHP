@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: PHPのセットアップ
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer, phpstan, phpcs, phpunit
+
+      - name: Composerで依存関係をインストール
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      - name: 静的解析（PHPStan）
+        run: vendor/bin/phpstan analyse --memory-limit=512M
+
+      - name: コードスタイルチェック（PHPCS）
+        run: vendor/bin/phpcs --standard=PSR12 src/
+
+      - name: 自動テスト実行（PHPUnit）
+        run: vendor/bin/phpunit
