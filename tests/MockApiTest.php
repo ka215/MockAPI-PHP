@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Tests;
+
 use PHPUnit\Framework\TestCase;
 use Dotenv\Dotenv;
 
@@ -29,7 +31,7 @@ class MockApiTest extends TestCase
 
     protected function tearDown(): void
     {
-        $logRequestFile = self::$logPath .'/request.log';
+        $logRequestFile = self::$logPath . '/request.log';
         $logResponseFile = self::$logPath . '/response.log';
 
         if (file_exists($logRequestFile)) {
@@ -52,7 +54,6 @@ class MockApiTest extends TestCase
     public function testGetRequestWithQueryParams(): void
     {
         $response = $this->makeRequest('GET', '/users?mock_response=success&sort=desc&limit=5');
-        
         $this->assertNotFalse($response, "GET /users with query params request failed.");
         $this->assertNotEmpty($response, "GET /users with query params should return a response.");
         $this->assertJson($response, "Response should be in JSON format.");
@@ -155,6 +156,9 @@ class MockApiTest extends TestCase
         $this->assertStringContainsString('id', $responseLog, "Response log should contain user ID.");
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function makeRequest(string $method, string $endpoint, ?array $data = null): string
     {
         $ch = curl_init();

@@ -1,4 +1,5 @@
 <?php
+
 return [
     100 => "HTTP/1.0 100 Continue",
     101 => "HTTP/1.0 101 Switching Protocols",
