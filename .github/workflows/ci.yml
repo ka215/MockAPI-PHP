@@ -28,9 +28,11 @@ jobs:
 
       - name: 静的解析（PHPStan）
         run: vendor/bin/phpstan analyse --memory-limit=512M
+        working-directory: ./
 
       - name: コードスタイルチェック（PHPCS）
         run: vendor/bin/phpcs --standard=PSR12
+        working-directory: ./
 
       - name: 自動テスト実行（PHPUnit）
         run: vendor/bin/phpunit
