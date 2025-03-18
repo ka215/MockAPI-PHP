@@ -32,5 +32,8 @@ jobs:
       - name: コードスタイルチェック（PHPCS）
         run: vendor/bin/phpcs --standard=phpcs.xml.dist
 
+      - name: APIサーバー起動
+        run: php start_server.php &
+
       - name: 自動テスト実行（PHPUnit）
         run: vendor/bin/phpunit
