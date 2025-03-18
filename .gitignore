@@ -1,0 +1,6 @@
+vendor/
+hooks/*.php
+*.log
+*.cache
+.env
+cookies.txt
