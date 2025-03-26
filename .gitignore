@@ -4,3 +4,11 @@ hooks/*.php
 *.cache
 .env
 cookies.txt
+
+.github/*
+!.github/workflows/ci.yml
+
+responses/*
+!responses/errors/**
+!responses/others/**
+!responses/users/**
