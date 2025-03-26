@@ -375,10 +375,6 @@ php vender/bin/phpunit
 
 以下は、MockAPI-PHP と他の主要なモックAPIツール（json-server, MSW, WireMock, Prism）との比較表です。
 
-<style type="text/css">#comparison-table table th:nth-child(2), #comparison-table table td:nth-child(2) { background-color: #FDFDEA; }</style>
-
-<div id="comparison-table">
-
 | 観点 | **MockAPI-PHP** | **json-server** | **Mock Service Worker (MSW)** | **WireMock** | **Prism (Stoplight)** |
 |------|------------------|------------------|------------------------------|---------------|------------------------|
 | **使用言語** | PHP | Node.js | JavaScript | Java | Node.js |
@@ -395,8 +391,6 @@ php vender/bin/phpunit
 | **学習コスト** | ★☆☆（PHP経験者には低い） | ★☆☆ | ★★☆ | ★★★ | ★★☆ |
 | **ログ/トラッキング機能** | ✅ 実装可能 | ✕ | ✅（開発ツール） | ✅ 詳細ログあり | △ |
 | **用途の柔軟性** | ◎（自由度が高い） | ○（簡単なAPIモックに最適） | △（UI開発特化） | ○（高機能） | △（制約あり） |
-
-</div>
 
 ### 特徴まとめ
 
