@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MockAPI-PHP - Main Entry Point
  *

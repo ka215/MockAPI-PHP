@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MockAPI-PHP - OpenAPI Schema Generator
  *
@@ -13,6 +14,7 @@
  * @license   MIT License
  * @link      https://github.com/ka215/MockAPI-PHP
  */
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -45,7 +47,8 @@ if (!is_dir($LOG_DIR)) {
 
 // -----------------------------------------------------------------------------
 
-function getOptions(): array {
+function getOptions(): array
+{
     global $SCHEMA_FORMAT, $SCHEMA_TITLE, $SCHEMA_VERSION;
 
     $defaultOptions = [
@@ -79,7 +82,8 @@ function getOptions(): array {
     }
 }
 
-function mapTypes(array $types): string {
+function mapTypes(array $types): string
+{
     $normalized = array_map(fn($t) => match ($t) {
         'integer' => 'integer',
         'double'  => 'number',
@@ -106,7 +110,8 @@ function mapTypes(array $types): string {
     }
 }
 
-function getJsonSchemaType(mixed $value): string {
+function getJsonSchemaType(mixed $value): string
+{
     return match (gettype($value)) {
         'integer' => 'integer',
         'double'  => 'number',
@@ -117,7 +122,8 @@ function getJsonSchemaType(mixed $value): string {
     };
 }
 
-function jsonToSchema(mixed $data): array {
+function jsonToSchema(mixed $data): array
+{
     $type = gettype($data);
 
     switch ($type) {
@@ -173,7 +179,6 @@ function jsonToSchema(mixed $data): array {
                 'type' => 'object',
                 'properties' => $properties
             ];
-        
         case 'boolean':
         case 'integer':
         case 'double':
@@ -188,7 +193,8 @@ function jsonToSchema(mixed $data): array {
     }
 }
 
-function validateJson(array $data): void {
+function validateJson(array $data): void
+{
     global $LOG_DIR;
     $validator = new Validator(new SchemaLoader());
     $validator->setMaxErrors(10);
@@ -216,7 +222,8 @@ function validateJson(array $data): void {
     }
 }
 
-function scanResponses(string $baseDir, string $title, string $version): array {
+function scanResponses(string $baseDir, string $title, string $version): array
+{
     $openapi = [
         'openapi' => '3.0.3',
         'info' => [
@@ -231,14 +238,20 @@ function scanResponses(string $baseDir, string $title, string $version): array {
     );
 
     foreach ($iterator as $file) {
-        if (!$file->isFile() || $file->getExtension() !== 'json') continue;
+        if (!$file->isFile() || $file->getExtension() !== 'json') {
+            continue;
+        }
 
         $relativePath = str_replace($baseDir . DIRECTORY_SEPARATOR, '', $file->getPathname());
         // Exclusion criteria: Exclude responses/errors below
-        if (str_starts_with($relativePath, 'errors' . DIRECTORY_SEPARATOR)) continue;
+        if (str_starts_with($relativePath, 'errors' . DIRECTORY_SEPARATOR)) {
+            continue;
+        }
         $parts = explode(DIRECTORY_SEPARATOR, $relativePath);
 
-        if (count($parts) < 3) continue;
+        if (count($parts) < 3) {
+            continue;
+        }
 
         $responseFile = array_pop($parts);
         $method = array_pop($parts);
@@ -274,7 +287,8 @@ function scanResponses(string $baseDir, string $title, string $version): array {
     return $openapi;
 }
 
-function trimExample(mixed $data): mixed {
+function trimExample(mixed $data): mixed
+{
     if (is_array($data)) {
         // In the case of an array (sequential index): Only the first item
         if (array_keys($data) === range(0, count($data) - 1)) {
@@ -300,9 +314,12 @@ function trimExample(mixed $data): mixed {
     return $data;
 }
 
-function outputSchema(array $schema, string $format): void {
+function outputSchema(array $schema, string $format): void
+{
     global $SCHEMA_DIR;
-    if (!is_dir($SCHEMA_DIR)) mkdir($SCHEMA_DIR, 0777, true);
+    if (!is_dir($SCHEMA_DIR)) {
+        mkdir($SCHEMA_DIR, 0777, true);
+    }
 
     if ($format === 'json') {
         $json = json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

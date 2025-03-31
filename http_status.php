@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MockAPI-PHP - HTTP Status Codes Map
  *
@@ -12,6 +13,7 @@
  * @license   MIT License
  * @link      https://github.com/ka215/MockAPI-PHP
  */
+
 return [
     100 => "HTTP/1.0 100 Continue",
     101 => "HTTP/1.0 101 Switching Protocols",

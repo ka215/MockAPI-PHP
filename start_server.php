@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MockAPI-PHP - Local Development Server Launcher
  *
@@ -12,6 +13,7 @@
  * @license   MIT License
  * @link      https://github.com/ka215/MockAPI-PHP
  */
+
 require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 
