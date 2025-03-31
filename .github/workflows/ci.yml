@@ -14,26 +14,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: リポジトリをチェックアウト
+      - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: PHPのセットアップ
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           tools: composer, phpstan, phpcs, phpunit
 
-      - name: Composerで依存関係をインストール
-        run: composer install --no-progress --no-suggest --prefer-dist
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
-      - name: 静的解析（PHPStan）
+      - name: Install dependencies with Composer
+        run: composer install --no-progress --prefer-dist
+
+      - name: Static Analysis (PHPStan)
         run: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=512M
 
-      - name: コードスタイルチェック（PHPCS）
+      - name: Code Style Check (PHPCS)
         run: vendor/bin/phpcs --standard=phpcs.xml.dist
 
-      - name: APIサーバー起動
+      - name: Automatic generation of OpenAPI schema
+        run: php generate-schema.php yaml
+
+      - name: Upload schema
+        uses: actions/upload-artifact@v3
+        with:
+          name: openapi-schema
+          path: schema/openapi.yaml
+
+      - name: Start the API server
         run: php start_server.php &
 
-      - name: 自動テスト実行（PHPUnit）
+      - name: Automated test execution (PHPUnit)
         run: vendor/bin/phpunit

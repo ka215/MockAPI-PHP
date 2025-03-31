@@ -6,7 +6,7 @@ It supports dynamic responses, polling functionality, and authentication control
 
 <div align="right"><small>
 
-[To Japanese Readme](./README_JP.md)
+[View Japanese version of README](./README_JP.md)
 
 </small></div>
 
@@ -36,11 +36,16 @@ It supports dynamic responses, polling functionality, and authentication control
 - **Custom Hooks**
   - Register custom hooks for each method + endpoint request to override response content.
     Example: `GET /users` request can be handled by a custom hook `hooks/get_users.php`.
+- **OpenAPI Schema Support**
+  - Equipped with a function to automatically generate OpenAPI 3.0 schema based on JSON responses.
+  - The `example` items in the schema are also appropriately trimmed and padded to avoid excess response data.
+  - It uses `opis/json-schema` for validation and automatically checks for schema consistency.
 - **Logging**
   - `request.log` stores request details (headers, query, body).
   - `response.log` stores response details.
   - `auth.log` stores authentication failures, and `error.log` stores generic errors.
   - All logs are linked by a request ID for traceability.
+  - Validation errors during automatic OpenAPI schema generation can be tracked in `validation-error.log`.
 - **Configuration via Environment Variables**
   - Uses `vlucas/phpdotenv` to read environment variables.
   - `.env` can define server settings such as `PORT`, base API path, temporary file storage (`cookies.txt`, etc.), and logging paths.
@@ -52,6 +57,7 @@ Below is an example structure of the `responses` directory. You can freely custo
 ```
 mock_api_server/
  ├── index.php             # Main script for the mock server
+ ├── generate-schema.php   # OpenAPI 3.0 Schema Generation Script
  ├── http_status.php       # HTTP status code definitions
  ├── start_server.php      # Local server startup script
  ├── .env                  # Configuration file (.env.sample provides a template)
@@ -86,11 +92,13 @@ mock_api_server/
  │   └── MockApiTest.php   # Initial test cases
  ├── phpunit.xml           # PHPUnit configuration file
  ├── version.json          # Version information file
+ ├── schema/               # OpenAPI Schema Output Directory
  └── logs/                 # Directory for log storage
       ├── auth.log         # Authentication error logs
       ├── error.log        # General error logs
       ├── request.log      # Request logs
-      └── response.log     # Response logs
+      ├── response.log     # Response logs
+      └── validation-error.log   # OpenAPI Schema Validation Error Logs
 ```
 
 ## Usage
@@ -122,6 +130,10 @@ mock_api_server/
     - **POST Request**
       ```bash
       curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
+      ```
+    - **PUT Request (data updating)**
+      ```bash
+      curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
       ```
     - **DELETE Request**
       ```bash
@@ -188,6 +200,96 @@ CREDENTIAL=           # Credential (temporary token for individual user authenti
 
 Note: The `API_KEY` and `CREDENTIAL` options are implemented as a simple authentication mechanism.
 If specified, the server will extract the Bearer token from the Authorization header and perform authentication.
+
+## OpenAPI Schema Auto-Generation
+
+Starting from version 1.2, this project includes a feature to automatically generate OpenAPI 3.0 schemas based on the JSON response files located under `responses/{endpoint_path}/{method}/{status_name}.json`.
+
+### How to Run
+**CLI (Command Line):**
+```bash
+php generate-schema.php [format] [title] [version]
+```
+
+- `format` (optional): Output format (`json` or `yaml`). Default: `yaml`
+- `title` (optional): Title for the OpenAPI schema
+- `version` (optional): Version number for the OpenAPI schema
+
+Example:
+```bash
+php generate-schema.php yaml "My Awesome API" "2.0.0"
+```
+
+**Web (via Browser):**
+```http
+GET /generate-schema.php?format=json&title=My+Awesome+API&version=2.0.0
+```
+
+### Output File
+The generated schema will be saved as either `schema/openapi.yaml` or `schema/openapi.json`.
+
+### Validation
+Each JSON response file will be validated against its automatically generated JSON Schema.
+If the structure is invalid, the process will be aborted and the error message will be written to `logs/validation-error.log`.
+
+### Automatic `example` Embedding
+Each schema includes an `example` field derived from the original JSON response:
+
+- If the response is an array, **only the first element** will be included in the example (to avoid oversized outputs).
+- This rule is recursively applied to nested arrays and objects as well.
+
+### Environment Variables (.env)
+You can customize default behavior by setting the following environment variables in `.env`:
+```env
+LOG_DIR=./logs
+SCHEMA_DIR=./schema
+SCHEMA_FORMAT=yaml
+SCHEMA_TITLE=MockAPI-PHP Auto Schema
+SCHEMA_VERSION=1.0.0
+```
+
+Note: if parameters are passed directly when executing the script, they take precedence over the environment variables.
+
+### Use Cases for Auto Schema Generation
+
+- When you want to avoid writing OpenAPI schemas manually.
+- For **API-first development** where mocks are created before implementation.
+- To integrate with other tools like **Prism** or **SwaggerUI**.
+- For ensuring schema consistency through automated testing.
+
+### Example: Auto-Generating Schema via CI/CD (GitHub Actions)
+
+`.github/workflows/generate-schema.yml`:
+
+```yaml
+name: Generate OpenAPI Schema
+
+on:
+  push:
+    paths:
+      - 'responses/**'
+      - 'generate-schema.php'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer install --no-dev
+      - run: php generate-schema.php json
+      - name: Upload schema
+        uses: actions/upload-artifact@v3
+        with:
+          name: openapi-schema
+          path: schema/openapi.json
+```
+
+With this setup, a fresh OpenAPI schema will be automatically generated and saved whenever response files are updated.
+
 
 ## Tips
 
@@ -373,6 +475,36 @@ Additional test cases can be added in `tests/MockApiTest.php`.
 ```bash
 php vendor/bin/phpunit
 ```
+
+## Comparison with Other Mock API Tools
+
+The following table compares **MockAPI-PHP** with other major mock API tools such as `json-server`, `MSW`, `WireMock`, and `Prism`.
+
+| Aspect | **MockAPI-PHP** | **json-server** | **Mock Service Worker (MSW)** | **WireMock** | **Prism (Stoplight)** |
+|--------|------------------|------------------|--------------------------------|---------------|------------------------|
+| **Language** | PHP | Node.js | JavaScript | Java | Node.js |
+| **Ease of Installation** | ★☆☆ (Very easy) | ★☆☆ (Very easy) | ★★☆ (Environment-dependent) | ★★★ (Heavy) | ★★☆ |
+| **Response Definition** | PHP logic + JSON files | Static JSON files | Defined in JavaScript | JSON or Java config | OpenAPI-based |
+| **Routing Control** | ✅ Flexible (via PHP) | △ Pattern-based | ✅ Defined via `rest.get()` etc. | ✅ URL pattern match | ✅ OpenAPI-driven |
+| **Dynamic Response** | ✅ Fully dynamic via PHP | △ Limited | ✅ Supported in JS | ✅ Supported via scripting | △ Difficult |
+| **Query/Param Handling** | ✅ Fully controllable | △ Limited | ✅ Fully supported | ✅ Fully supported | △ Schema-based conditions only |
+| **Header/Method Handling** | ✅ Fully supported | △ Limited | ✅ Fully supported | ✅ Fully supported | ✅ |
+| **Error & Auth Simulation** | ✅ Fully programmable | ✕ Difficult | ✅ Supported via logic | ✅ Fully configurable | △ Limited branching |
+| **Delay & Timing Control** | ✅ Flexible via `sleep()` etc. | ✕ | ✅ Via `setTimeout()` etc. | ✅ Via `fixedDelay` etc. | △ Difficult |
+| **OpenAPI Integration** | ✅ Built-in schema generation | ✕ | ✕ | △ Can export | ✅ Native |
+| **Schema Auto-Generation** | ✅ From JSON responses | ✕ | ✕ | △ Via converter tools | ✅ |
+| **Example Embedding** | ✅ Automatic (with trimming) | ✕ | ✕ | ✕ | ✅ |
+| **Best Fit For** | PHP-based projects | Node.js projects | Frontend UI development | Java-based projects | API-spec-first organizations |
+| **Learning Curve** | ★☆☆ (Low for PHP devs) | ★☆☆ | ★★☆ | ★★★ | ★★☆ |
+| **Logging/Tracking** | ✅ Built-in logging (incl. validation) | ✕ | ✅ Via DevTools | ✅ Detailed logs | △ |
+| **Flexibility** | ◎ Maximum (code-driven) | ○ Great for simple mocks | △ UI-dev focused | ○ Full-featured | △ Some constraints |
+
+### Summary of Advantages
+
+- **MockAPI-PHP allows defining mock responses with dynamic logic using PHP**.
+- Especially well-suited for PHP backend projects or frontend-backend decoupled development where the backend is not yet ready.
+- Unlike GUI or OpenAPI-based tools, MockAPI-PHP focuses on **code-driven** API mocking.
+- Comes with built-in **OpenAPI 3.0 schema generation** from response structures (from v1.2 onwards).
 
 ## License
 

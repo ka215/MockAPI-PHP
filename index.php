@@ -1,4 +1,17 @@
 <?php
+/**
+ * MockAPI-PHP - Main Entry Point
+ *
+ * This script serves as the main entry point for handling mock API requests.
+ * It handles routing, authorization, logging, and response delivery.
+ *
+ * PHP version 8.3+
+ *
+ * @author    Katsuhiko Maeno
+ * @copyright Copyright (c) 2025 Katsuhiko Maeno
+ * @license   MIT License
+ * @link      https://github.com/ka215/MockAPI-PHP
+ */
 
 require 'vendor/autoload.php';
 use Dotenv\Dotenv;
