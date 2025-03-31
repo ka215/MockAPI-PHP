@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.3.0] - 2025-04-**
+
+
 ## [1.2.0] - 2025-04-01
 ### Added
 - Added feature of OpenAPI 3.0 schema auto-generation.
