@@ -6,7 +6,7 @@
 
 <div align="right"><small>
 
-[To English Readme](./README.md)
+[View English version of README](./README.md)
 
 </small></div>
 
@@ -36,11 +36,16 @@
 - **カスタムフック**
   - メソッド+エンドポイントの任意のリクエスト毎にカスタムフックを登録してレスポンス内容をオーバーライドできる。
     例: `GET /users` のリクエストに対して `hooks/get_users.php` のカスタムフックファイルを実行してレスポンスを制御可能。
+- **OpenAPIスキーマへの対応**
+  - JSONレスポンスを元に OpenAPI 3.0 スキーマを自動生成する機能を搭載。
+  - `example` 項目も適切にトリミングされて埋め込まれるため、過剰なレスポンスデータを回避。
+  - バリデーションには `opis/json-schema` を使用し、スキーマの整合性チェックも自動化。
 - **ロギング**
   - `request.log` にリクエスト内容（ヘッダー・クエリ・ボディ）を記録。
   - `response.log` にレスポンス内容を記録。
   - `auth.log` に認証エラー、 `error.log` に汎用エラーの内容を記録。
   - 全てのログはリクエストIDにより紐づけられるため、照合可能。
+  - OpenAPIスキーマ自動生成時のバリデーションエラーは `validation-error.log` でトラッキング可能。
 - **環境変数による設定保存**
   - 環境変数の読み込みには `vlucas/phpdotenv` を使用。
   - `.env` を使い、ポート番号 `PORT` 等の各種環境変数を管理可能。
@@ -53,6 +58,7 @@
 ```
 mock_api_server/
  ├── index.php             # モックサーバーのメインスクリプト
+ ├── generate-schema.php   # OpenAPI 3.0 スキーマ生成スクリプト
  ├── http_status.php       # HTTPステータスコードの定義
  ├── start_server.php      # ローカルサーバー起動スクリプト
  ├── .env                  # 設定用（ .env.sample を参考に設定）
@@ -87,11 +93,13 @@ mock_api_server/
  │   └── MockApiTest.php   # 初期テストケース
  ├── phpunit.xml           # ユニットテスト設定ファイル
  ├── version.json          # プロジェクトパッケージのバージョン情報
+ ├── schema/               # OpenAPI スキーマ出力ディレクトリ
  └── logs/                 # ログ保存ディレクトリ（.envで変更可能）
       ├── auth.log         # 認証エラーのログ
       ├── error.log        # エラーログ
       ├── request.log      # リクエストのログ
-      └── response.log     # レスポンスのログ
+      ├── response.log     # レスポンスのログ
+      └── validation-error.log   # OpenAPI スキーマバリデーションエラーログ
 ```
 
 ## 使い方
@@ -188,6 +196,96 @@ API_KEY=              # 認証用APIキー（アプリケーション単位の�
 CREDENCIAL=           # 資格情報（ユーザー単位等の単体認証用の期限付きトークン）
 ```
 ※ API_KEYとCREDENCIALオプションは本プロジェクトでは簡易的な実装となっており、指定時はリクエストのAuthorizationヘッダからBearerトークンを取得して認証処理が行われます。
+
+## OpenAPI スキーマ自動生成機能
+バージョン1.2以降にて `responses/{エンドポイントパス}/{メソッド}/{ステータス名}.json` に配置されたJSONレスポンスファイル群から OpenAPI 3.0 スキーマを自動生成する機能が追加されました。
+
+### 実行方法
+**CLI（コマンドライン）**
+```bash
+php generate-schema.php [format] [title] [version]
+```
+
+- `format` （任意）：出力フォーマット（`json` または `yaml`）デフォルト：`yaml`
+- `title` （任意）： OpenAPI のタイトル
+- `version` （任意）： OpenAPI のバージョン
+
+例：
+```bash
+php generate-schema.php yaml "My Awesome API" "2.0.0"
+```
+
+**Web（ブラウザ経由）**
+```http
+GET /generate-schema.php?format=json&title=My+Awesome+API&version=2.0.0
+```
+
+### 出力ファイル
+`schema/openapi.yaml` または `schema/openapi.json` にスキーマが生成されます。
+
+### バリデーション
+各 JSON レスポンスファイルは、独自に生成されたスキーマに対して JSON Schema バリデーションを実施します。
+不正な構造のレスポンスがあれば `logs/validation-error.log` にエラーメッセージを出力し、処理を中断します。
+
+### example 自動登録
+生成される OpenAPI スキーマには、example として元となった JSON の内容が登録されます。
+
+- 配列の場合、最初の要素のみ が example に含まれます（肥大化回避のため）。
+- ネストされた配列・オブジェクトにも再帰的に適用されます。
+
+### 環境変数（.env）
+`.env` に以下の環境変数を定義することで、デフォルト動作をカスタマイズできます。
+```env
+LOG_DIR=./logs
+SCHEMA_DIR=./schema
+SCHEMA_FORMAT=yaml
+SCHEMA_TITLE=MockAPI-PHP Auto Schema
+SCHEMA_VERSION=1.0.0
+```
+
+※ 環境変数で定義された `SCHEMA_FORMAT` `SCHEMA_TITLE` `SCHEMA_VERSION` よりもパラメータで指定した値が優先されます。
+
+### スキーマ自動生成の活用シーン
+
+- 手動で OpenAPI スキーマを書く手間を省きたい場合
+- 実装より先にモックを作る「APIファースト」な開発方針に沿うケース
+- 他ツール（Prism, SwaggerUI など）との連携に使いたい場合
+- 自動テストとの連携でスキーマ整合性を確認したいとき
+
+### CI/CD での自動スキーマ生成例（GitHub Actions）
+
+`.github/workflows/generate-schema.yml`
+
+```yaml
+name: Generate OpenAPI Schema
+
+on:
+  push:
+    paths:
+      - 'responses/**'
+      - 'generate-schema.php'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - run: composer install --no-dev
+      - run: php generate-schema.php json
+      - name: Upload schema
+        uses: actions/upload-artifact@v3
+        with:
+          name: openapi-schema
+          path: schema/openapi.json
+```
+
+これにより、レスポンス変更時に常に最新のスキーマが生成・保存されるようになります。
+
+
 
 ## Tips
 
@@ -379,24 +477,27 @@ php vender/bin/phpunit
 |------|------------------|------------------|------------------------------|---------------|------------------------|
 | **使用言語** | PHP | Node.js | JavaScript | Java | Node.js |
 | **インストール難易度** | ★☆☆（簡単） | ★☆☆（簡単） | ★★☆（環境依存） | ★★★（重い） | ★★☆ |
-| **レスポンス定義方法** | PHPコード（動的） | JSONファイル（静的） | JavaScriptで定義 | JSON or Java設定 | OpenAPI仕様ベース |
-| **ルーティング制御** | 柔軟（PHPで自由） | パスパターン定義 | `rest.get()`等で定義 | URLパターンマッチ | OpenAPI準拠 |
-| **動的レスポンス生成** | ✅ PHPロジックで任意対応 | △ 限定的 | ✅ JavaScript可 | ✅ スクリプトで可 | △ 難しい |
+| **レスポンス定義方法** | PHPコード＋JSONファイル | JSONファイル（静的） | JavaScriptで定義 | JSON or Java設定 | OpenAPI仕様ベース |
+| **ルーティング制御** | ✅ 柔軟（PHPで自由） | △ パスパターン定義 | ✅ `rest.get()`等で定義 | ✅ URLパターンマッチ | ✅ OpenAPI準拠 |
+| **動的レスポンス生成** | ✅ PHPロジックで自由 | △ 限定的 | ✅ JavaScript可 | ✅ スクリプトで可 | △ 難しい |
 | **クエリ/パラメータ分岐** | ✅ 任意に処理可 | △ 限定的 | ✅ 完全対応 | ✅ 完全対応 | △ スキーマ駆動 |
 | **ヘッダー/メソッド制御** | ✅ 完全対応 | △ 限定対応 | ✅ 完全対応 | ✅ 完全対応 | ✅ |
 | **エラーや認証の再現** | ✅ 自由自在に処理記述 | ✕ 難しい | ✅ ロジックで対応可 | ✅ 詳細制御可 | △ 条件分岐は難 |
 | **応答遅延・タイミング制御** | ✅ `sleep()`などで柔軟対応 | ✕ | ✅ `setTimeout()`等で対応可 | ✅ `fixedDelay`など | △ 難しい |
-| **OpenAPI連携** | ✕（手動対応） | ✕ | ✕ | △ | ✅ 主目的 |
-| **開発対象との相性** | ✅ PHPプロジェクトに最適 | Node.js系と相性良 | フロント専用（Vue/Reactなど） | Javaプロジェクト向け | OpenAPI中心の組織向け |
+| **OpenAPI連携** | ✅ 自動生成機能あり | ✕ | ✕ | △ エクスポート可能 | ✅ 主目的 |
+| **スキーマ自動生成** | ✅ JSONレスポンスから生成 | ✕ | ✕ | △ （変換ツールあり） | ✅ |
+| **example 自動埋込** | ✅ 自動（大きな配列は1件のみ） | ✕ | ✕ | ✕ | ✅ |
+| **開発対象との相性** | PHPプロジェクトに最適 | Node.js系と相性良 | フロント専用（Vue/Reactなど） | Javaプロジェクト向け | OpenAPI中心の組織向け |
 | **学習コスト** | ★☆☆（PHP経験者には低い） | ★☆☆ | ★★☆ | ★★★ | ★★☆ |
-| **ログ/トラッキング機能** | ✅ 実装可能 | ✕ | ✅（開発ツール） | ✅ 詳細ログあり | △ |
-| **用途の柔軟性** | ◎（自由度が高い） | ○（簡単なAPIモックに最適） | △（UI開発特化） | ○（高機能） | △（制約あり） |
+| **ログ/トラッキング機能** | ✅ ログ実装可（バリデーション含む） | ✕ | ✅（DevToolsで可） | ✅ 詳細ログあり | △ |
+| **用途の柔軟性** | ◎（コードで完全制御・自由度が高い） | ○（簡単なAPIモックに最適） | △（UI開発特化） | ○（高機能） | △（制約あり） |
 
 ### 特徴まとめ
 
 - **MockAPI-PHPは、動的ロジックを含むモックレスポンスをPHPで直接定義可能** です。
 - 特に PHPプロジェクトとの親和性が高く、バックエンド未完成時の開発やAPI分離開発において柔軟に対応可能です。
 - OpenAPIベースやGUIツールとは異なり、コード駆動でのモックAPI開発に最適化されています。
+- JSONレスポンスの構造を元に OpenAPI 3.0 スキーマを自動生成する機能を搭載しています（v1.2以降）。
 
 ## ライセンス
 

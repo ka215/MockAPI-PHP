@@ -12,3 +12,6 @@ responses/*
 !responses/errors/**
 !responses/others/**
 !responses/users/**
+
+schema/*.json
+schema/*.yaml

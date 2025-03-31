@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * MockAPI-PHP - PHPUnit Test Suite
+ *
+ * This test suite verifies the behavior of the mock API endpoints, including:
+ *  - Basic HTTP methods (GET, POST, PUT, DELETE)
+ *  - Query parameter handling
+ *  - Polling response changes
+ *  - Logging functionality
+ *  - OpenAPI schema generation in JSON/YAML
+ *
+ * PHP version 8.3+
+ *
+ * @author    Katsuhiko Maeno
+ * @copyright Copyright (c) 2025 Katsuhiko Maeno
+ * @license   MIT License
+ * @link      https://github.com/ka215/MockAPI-PHP
+ */
+
 declare(strict_types=1);
 
 namespace Tests;
@@ -154,6 +172,90 @@ class MockApiTest extends TestCase
 
         $this->assertStringContainsString('/users', $requestLog, "Request log should contain /users endpoint.");
         $this->assertStringContainsString('id', $responseLog, "Response log should contain user ID.");
+    }
+
+    public function testOpenApiSchemaGenerationJsonShouldWork(): void
+    {
+        $scriptPath = realpath(__DIR__ . '/../generate-schema.php');
+        $schemaPath = __DIR__ . '/../schema/openapi.json';
+        $expectedExample = [
+            'id' => 3,
+            'name' => 'Mike Born',
+            'email' => 'mike@example.com',
+        ];
+
+        $this->assertNotFalse($scriptPath, 'Invalid path for generate-schema.php.');
+
+        // スキーマ出力ファイルがあれば一旦削除
+        if (file_exists($schemaPath)) {
+            unlink($schemaPath);
+        }
+
+        // Execution format: CLI (format: json)
+        $cmd = escapeshellcmd("php {$scriptPath} json");
+        $output = shell_exec($cmd);
+        $this->assertFileExists($schemaPath, "Schema files are not generated: {$schemaPath}");
+
+        $schema = json_decode(file_get_contents($schemaPath), true, 512, JSON_THROW_ON_ERROR);
+
+        // Check the basic structure of your OpenAPI schema
+        $this->assertArrayHasKey('paths', $schema, "The JSON schema does not contain paths.");
+        $this->assertArrayHasKey('/users', $schema['paths'], "The JSON schema does not contain /users path.");
+        $this->assertArrayHasKey('get', $schema['paths']['/users'], "The JSON schema does not contain GET method.");
+
+        $response = $schema['paths']['/users']['get']['responses']['default'] ?? null;
+        $this->assertNotNull($response, "No Response as HTTP 200 code.");
+
+        $example = $schema['paths']['/users']['get']['responses']['default']['content']['application/json']['example']
+            ?? null;
+        $this->assertNotNull($example, "The example field is not included.");
+
+        // Verify that the contents of default.json match
+        $this->assertEquals($expectedExample, $example, "The content of example does not match default.json.");
+    }
+
+    public function testOpenApiSchemaGenerationYamlShouldWork(): void
+    {
+        $scriptPath = realpath(__DIR__ . '/../generate-schema.php');
+        $yamlPath = __DIR__ . '/../schema' . '/openapi.yaml';
+        $expectedExample = [
+            'id' => 3,
+            'name' => 'Mike Born',
+            'email' => 'mike@example.com',
+        ];
+
+        $this->assertNotFalse($scriptPath, 'Invalid path for generate-schema.php.');
+
+        if (file_exists($yamlPath)) {
+            unlink($yamlPath);
+        }
+
+        // Generate a schema in yaml format
+        $cmd = escapeshellcmd("php {$scriptPath} yaml");
+        $output = shell_exec($cmd);
+        $this->assertFileExists($yamlPath, "YAML schema file was not generated: {$yamlPath}");
+
+        // Convert yaml to array and validate
+        $yaml = file_get_contents($yamlPath);
+        $this->assertNotFalse($yaml, "Failed to read openapi.yaml.");
+
+        if (!class_exists(\Symfony\Component\Yaml\Yaml::class)) {
+            $this->markTestSkipped('symfony/yaml is not installed.');
+        }
+
+        $schema = \Symfony\Component\Yaml\Yaml::parse($yaml);
+
+        // Check the basic structure of your OpenAPI schema
+        $this->assertArrayHasKey('paths', $schema, "The yaml schema does not contain paths.");
+        $this->assertArrayHasKey('/users', $schema['paths'], "The yaml schema does not contain /users path.");
+        $this->assertArrayHasKey('get', $schema['paths']['/users'], "The yaml schema does not contain GET method.");
+
+        $example = $schema['paths']['/users']['get']['responses']['default']['content']['application/json']['example']
+            ?? null;
+        $this->assertNotNull($example, "The example field is not included.");
+
+        // Verify that the contents of default.json match
+        $this->assertEquals($expectedExample, $example, "The content of example does not match default.json.");
     }
 
     /**
