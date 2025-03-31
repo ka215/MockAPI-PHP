@@ -43,6 +43,10 @@ jobs:
       - name: Automatic generation of OpenAPI schema
         run: php generate-schema.php yaml
 
+      - name: Verify schema file exists
+        run: ls -la schema/openapi.yaml
+        continue-on-error: true
+
       - name: Upload schema
         uses: actions/upload-artifact@v3
         with:
