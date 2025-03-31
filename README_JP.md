@@ -1,4 +1,4 @@
-# MockAPI-PHP <span style="font-size: 14px;font-weight: 400;vertical-align: middle;">── 日本語ドキュメント</span>
+# MockAPI-PHP
 
 このプロジェクトは、PHP製の軽量なモックAPIサーバーです。  
 開発・テスト環境で実際のAPIを使用せずに、リクエストのシミュレーションが可能です。  
