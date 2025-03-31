@@ -177,7 +177,7 @@ class MockApiTest extends TestCase
     public function testOpenApiSchemaGenerationJsonShouldWork(): void
     {
         $scriptPath = realpath(__DIR__ . '/../generate-schema.php');
-        $schemaPath = realpath(__DIR__ . '/../schema/openapi.json');
+        $schemaPath = __DIR__ . '/../schema/openapi.json';
         $expectedExample = [
             'id' => 3,
             'name' => 'Mike Born',
@@ -217,7 +217,7 @@ class MockApiTest extends TestCase
     public function testOpenApiSchemaGenerationYamlShouldWork(): void
     {
         $scriptPath = realpath(__DIR__ . '/../generate-schema.php');
-        $yamlPath = realpath(__DIR__ . '/../schema') . '/openapi.yaml';
+        $yamlPath = __DIR__ . '/../schema' . '/openapi.yaml';
         $expectedExample = [
             'id' => 3,
             'name' => 'Mike Born',
