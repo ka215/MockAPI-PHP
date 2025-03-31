@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * MockAPI-PHP - Main Entry Point
+ *
+ * This script serves as the main entry point for handling mock API requests.
+ * It handles routing, authorization, logging, and response delivery.
+ *
+ * PHP version 8.3+
+ *
+ * @author    Katsuhiko Maeno
+ * @copyright Copyright (c) 2025 Katsuhiko Maeno
+ * @license   MIT License
+ * @link      https://github.com/ka215/MockAPI-PHP
+ */
+
 require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 
@@ -10,12 +24,12 @@ if (file_exists(__DIR__ . '/.env')) {
 }
 
 // Set timezone
-$TIMEZONE = trim($_ENV['TIMEZONE'] ?? '') ?: 'UTC';
+$TIMEZONE = isset($_ENV['TIMEZONE']) ? trim($_ENV['TIMEZONE']) : 'UTC';
 date_default_timezone_set($TIMEZONE);
 
-$BASE_PATH = trim($_ENV['BASE_PATH'] ?? '') ?: '/api';
-$LOG_DIR = trim($_ENV['LOG_DIR'] ?? '') ?: __DIR__ . '/logs';
-$COOKIE_FILE = (trim($_ENV['TEMP_DIR'] ?? '') ?: __DIR__) . '/cookies.txt';
+$BASE_PATH = isset($_ENV['BASE_PATH']) ? trim($_ENV['BASE_PATH']) : '/api';
+$LOG_DIR = isset($_ENV['LOG_DIR']) ? trim($_ENV['LOG_DIR']) : __DIR__ . '/logs';
+$COOKIE_FILE = (isset($_ENV['TEMP_DIR']) ? trim($_ENV['TEMP_DIR']) : __DIR__) . '/cookies.txt';
 
 // Create log directory if it doesn't exist
 if (!is_dir($LOG_DIR)) {
@@ -74,7 +88,7 @@ if (!authorizeRequest($request_id)) {
 logRequest($request_id, $method, $path, $client_id, $request_data);
 
 // Retrieve query parameters and separate `mock_response` and `mock_content_type`
-$query_params = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS) ?? [];
+$query_params = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS) ?: [];
 $request_data['mock_response'] = $query_params['mock_response'] ?? null;
 unset($query_params['mock_response']); // Remove `mock_response`
 $request_data['mock_content_type'] = $query_params['mock_content_type'] ?? null;
@@ -109,7 +123,7 @@ if (file_exists($hook_file)) {
 }
 
 // Handle response
-if ($response_file) {
+if ($response_file !== null) {
     handleResponse($request_id, $response_file, $request_data);
 } else {
     errorResponse($request_id, 404);
@@ -151,7 +165,7 @@ function unauthorizedResponse(string $request_id): void
 /**
  * Error response
  */
-function errorResponse(string $request_id, int $code, ?string $message = null)
+function errorResponse(string $request_id, int $code, ?string $message = null): void
 {
     global $responses_dir;
     $error_file_json = "$responses_dir/errors/$code.json";
@@ -175,6 +189,8 @@ function errorResponse(string $request_id, int $code, ?string $message = null)
 
 /**
  * Parse dynamic route patterns
+ * @param array<int, string> $segments
+ * @param array<string, mixed> $request_data
  */
 function detectDynamicRoute(array $segments, array &$request_data): string
 {
@@ -201,6 +217,7 @@ function detectDynamicRoute(array $segments, array &$request_data): string
 
 /**
  * Search for a response file (JSON or TXT)
+ * @param array<string, mixed> $request_data
  */
 function findResponseFile(string $client_id, string $endpoint, string $method, array &$request_data): ?string
 {
@@ -212,7 +229,9 @@ function findResponseFile(string $client_id, string $endpoint, string $method, a
     if (!empty($mock_response)) {
         foreach (['json', 'txt'] as $ext) {
             $custom_file = "$dir_path/$mock_response.$ext";
-            if (file_exists($custom_file)) return $custom_file;
+            if (file_exists($custom_file)) {
+                return $custom_file;
+            }
         }
     }
 
@@ -223,7 +242,9 @@ function findResponseFile(string $client_id, string $endpoint, string $method, a
 
     // Search for response files
     foreach (["$current_count.json", "$current_count.txt", "default.json", "default.txt"] as $filename) {
-        if (file_exists("$dir_path/$filename")) return "$dir_path/$filename";
+        if (file_exists("$dir_path/$filename")) {
+            return "$dir_path/$filename";
+        }
     }
 
     return null; // No response files found
@@ -231,8 +252,9 @@ function findResponseFile(string $client_id, string $endpoint, string $method, a
 
 /**
  * Handle response processing
+ * @param array<string, mixed> $request_data
  */
-function handleResponse(string $request_id, string $response_file, array $request_data)
+function handleResponse(string $request_id, string $response_file, array $request_data): void
 {
     $extension = pathinfo($response_file, PATHINFO_EXTENSION);
     $response_content = file_get_contents($response_file);
@@ -258,7 +280,7 @@ function handleResponse(string $request_id, string $response_file, array $reques
 /**
  * Logging (Authorization error)
  */
-function logAuthFailure(string $request_id, string $message)
+function logAuthFailure(string $request_id, string $message): void
 {
     global $LOG_DIR;
     file_put_contents("$LOG_DIR/auth.log", json_encode([
@@ -272,7 +294,7 @@ function logAuthFailure(string $request_id, string $message)
 /**
  * Logging (error)
  */
-function logError(string $request_id, string $message)
+function logError(string $request_id, string $message): void
 {
     global $LOG_DIR;
     file_put_contents("$LOG_DIR/error.log", json_encode([
@@ -285,6 +307,7 @@ function logError(string $request_id, string $message)
 
 /**
  * Logging (Request)
+ * @param array<string, mixed> $request_data
  */
 function logRequest(string $request_id, string $method, string $endpoint, string $client_id, array $request_data): void
 {
@@ -308,7 +331,7 @@ function logRequest(string $request_id, string $method, string $endpoint, string
 /**
  * Logging (Response)
  */
-function logResponse(string $request_id, string $response)
+function logResponse(string $request_id, string $response): void
 {
     global $LOG_DIR;
     file_put_contents("$LOG_DIR/response.log", json_encode([

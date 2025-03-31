@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="MockAPI-PHP">
+    <rule ref="PSR12"/>
+
+    <rule ref="PSR1.Files.SideEffects">
+        <severity>0</severity>
+    </rule>
+
+    <file>index.php</file>
+    <file>http_status.php</file>
+    <file>start_server.php</file>
+    <file>hooks</file>
+    <file>tests</file>
+
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>logs/*</exclude-pattern>
+    <exclude-pattern>temp/*</exclude-pattern>
+    <exclude-pattern>responses/*</exclude-pattern>
+
+    <extensions>
+        <extension name="php"/>
+    </extensions>
+</ruleset>

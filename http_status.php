@@ -1,4 +1,19 @@
 <?php
+
+/**
+ * MockAPI-PHP - HTTP Status Codes Map
+ *
+ * Returns an associative array mapping HTTP status codes to their corresponding
+ * HTTP/1.0 status lines. Used internally to standardize HTTP responses.
+ *
+ * PHP version 8.3+
+ *
+ * @author    Katsuhiko Maeno
+ * @copyright Copyright (c) 2025 Katsuhiko Maeno
+ * @license   MIT License
+ * @link      https://github.com/ka215/MockAPI-PHP
+ */
+
 return [
     100 => "HTTP/1.0 100 Continue",
     101 => "HTTP/1.0 101 Switching Protocols",
