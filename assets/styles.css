@@ -51,7 +51,7 @@ p {
     clear: both;
     padding-bottom: 0.5rem;
 }
-a:not(:where(li a, li * a), .navi-link, >h1),
+a:not(:where(li a, li * a)):not(.navi-link):not(:has(>h1)),
 .text-link {
     color: #3b82f6 !important; /* text-blue-500 */
     text-decoration: underline !important;
@@ -60,16 +60,16 @@ a:not(:where(li a, li * a), .navi-link, >h1),
     transition: color 0.2s ease-in-out;
 }
 
-a:not(:where(li a, li * a), .navi-link, >h1):hover,
+a:not(:where(li a, li * a)):not(.navi-link):not(:has(>h1)):hover,
 .text-link:hover {
     color: #1d4ed8 !important; /* hover:text-blue-700 */
 }
 @media (prefers-color-scheme: dark) {
-    a:not(:where(li a, li * a), .navi-link, >h1),
+    a:not(:where(li a, li * a)):not(.navi-link):not(:has(>h1)),
     .text-link {
         color: #60a5fa; /* text-blue-400 */
     }
-    a:not(:where(li a, li * a), .navi-link, >h1):hover,
+    a:not(:where(li a, li * a)):not(.navi-link):not(:has(>h1)):hover,
     .text-link:hover {
         color: #93c5fd; /* hover:text-blue-300 */
     }
@@ -206,16 +206,20 @@ table td {
         background-color: #111827; /* bg-gray-900 */
     }
 }
-h2[id^="comparison"]+p+table th:nth-child(2) {
+h2[id^="comparison"]+p+table th:nth-child(2),
+h2[id="他のモックapiツールとの比較"]+p+table th:nth-child(2) {
     background-color: oklch(96.2% 0.059 95.617); /* bg-amber-100 */
 }
-h2[id^="comparison"]+p+table td:nth-child(2) {
+h2[id^="comparison"]+p+table td:nth-child(2),
+h2[id="他のモックapiツールとの比較"]+p+table td:nth-child(2) {
     background-color: oklch(98.7% 0.026 102.212); /* bg-yellow-50 */
 }
-h2[id="features"]+ul>li {
-    padding-bottom: 0.25rem;
+h2[id="features"]+ul>li,
+h2[id="特徴"]+ul>li {
+        padding-bottom: 0.25rem;
 }
-h2[id="features"]+ul ul {
+h2[id="features"]+ul ul,
+h2[id="特徴"]+ul ul {
     margin-top: 0.25rem;
     margin-left: 2rem;
     list-style-type: disc;
