@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MockAPI-PHP</title>
+    <title> - MockAPI-PHP</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Flowbite (UI components) -->
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./assets/styles.css" />
+    <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body class="h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden">
 
 <!-- Header -->
-<header class="sticky top-0 p-6 z-40 bg-blue-500 dark:bg-blue-700 text-white shadow-md">
+<header class="p-6 bg-blue-500 dark:bg-blue-700 text-white shadow-md">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-bold">MockAPI-PHP</h1>
+        <a href="../index.html">
+            <h1 class="text-2xl font-bold">MockAPI-PHP</h1>
+        </a>
         <div class="flex items-center gap-4">
             <!-- Language Switch -->
-            <a href="index.html" class="flex items-center gap-1 text-white navi-link">
-                <span class="icon-language-translation" title="To English README">
+            <a href="../index_ja.html" class="flex items-center gap-1 text-white navi-link">
+                <span class="icon-language-translation" title="To Japanese README">
                     <svg fill="currentColor" width="1em" height="1em" viewBox="0 0 52 52" data-name="Language Translation" id="language-translation" xmlns="http://www.w3.org/2000/svg">
                         <path d="M39,18.67H35.42l-4.2,11.12A29,29,0,0,1,20.6,24.91a28.76,28.76,0,0,0,7.11-14.49h5.21a2,2,0,0,0,0-4H19.67V2a2,2,0,1,0-4,0V6.42H2.41a2,2,0,0,0,0,4H7.63a28.73,28.73,0,0,0,7.1,14.49A29.51,29.51,0,0,1,3.27,30a2,2,0,0,0,.43,4,1.61,1.61,0,0,0,.44-.05,32.56,32.56,0,0,0,13.53-6.25,32,32,0,0,0,12.13,5.9L22.83,52H28l2.7-7.76H43.64L46.37,52h5.22Zm-15.3-8.25a23.76,23.76,0,0,1-6,11.86,23.71,23.71,0,0,1-6-11.86Zm8.68,29.15,4.83-13.83L42,39.57Z"/>
                     </svg>
                 </span>
-                <span class="ml-1 hover:underline">English</span>
+                <span class="ml-1 hover:underline">Japanese</span>
             </a>
             <!-- GitHub Link -->
             <a href="https://github.com/ka215/MockAPI-PHP" class="text-white navi-link">
@@ -49,66 +51,75 @@
        <div class="h-full px-2 py-2 overflow-y-auto">
           <ul class="pt-4 space-y-2 font-medium">
              <li>
-                <a href="docs/ja/section.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../index.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">特徴</span>
+                    <span class="ms-3">Overview</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/section-2.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/features.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">ディレクトリ構成</span>
+                    <span class="ms-3">Features</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/section-4.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/directory-structure.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">使い方</span>
+                    <span class="ms-3">Directory Structure</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/section-5.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/usage.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">環境変数</span>
+                    <span class="ms-3">Usage</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/openapi.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/environment-variables-env-configuration.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">OpenAPI対応</span>
+                    <span class="ms-3">Environment Variables</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/tips.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/openapi-schema-auto-generation.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">利用上のヒント</span>
+                    <span class="ms-3">OpenAPI Support</span>
                 </a>
              </li>
              <li>
-                <a href="docs/ja/section-7.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                <a href="../docs/tips.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">他ツールとの比較</span>
+                    <span class="ms-3">Tips</span>
+                </a>
+             </li>
+             <li>
+                <a href="../docs/comparison-with-other-mock-api-tools.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
+                    <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
+                        <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
+                    </svg>
+                    <span class="ms-3">Comparison Table</span>
                 </a>
              </li>
           </ul>
@@ -117,76 +128,12 @@
   </div>
 
   <div class="container mx-auto p-6 overflow-y-auto">
-    <!-- Badges -->
-    <div class="badge-container flex flex-wrap justify-center mb-6">
-        <img src="https://img.shields.io/badge/PHP-8.3%2B-blue.svg" alt="PHP Version">
-        <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
-        <img src="https://img.shields.io/github/v/release/ka215/MockAPI-PHP" alt="GitHub release">
-        <img src="https://img.shields.io/github/issues/ka215/MockAPI-PHP" alt="GitHub issues">
-        <img src="https://img.shields.io/github/last-commit/ka215/MockAPI-PHP" alt="GitHub last commit">
-    </div>
-
-    <p class="text-center">
-        このプロジェクトは PHP 製の軽量なモック API サーバーです。<br>
-        開発・テスト環境で実際の API を使用せずにリクエストのシミュレーションが可能です。<br>
-        動的レスポンス、ポーリング機能、環境変数 (<code>.env</code>) を使用した認証制御に対応しています。
-    </p>
-
-    <!-- Features Section -->
-    <section class="mt-8">
-        <h2 id="features" class="text-xl font-bold border-b pb-2">機能概要</h2>
-        <ul class="list-disc pl-6 mt-4">
-            <li><strong>エンドポイントの自動登録</strong> - <code>responses/</code> フォルダをスキャンして自動登録。</li>
-            <li><strong>動的レスポンスの読み込み</strong> - JSON やテキストレスポンスに対応。</li>
-            <li><strong>ポーリング対応</strong> - リクエスト回数に応じたレスポンス変更。</li>
-            <li><strong>カスタムレスポンス</strong> - クエリパラメータでレスポンスを切り替え可能。</li>
-            <li><strong>エラーレスポンス</strong> - 404 などのエラーレスポンスを定義可能。</li>
-            <li><strong>レスポンス遅延</strong> - 遅延レスポンスに対応。</li>
-            <li><strong>カスタムフック</strong> - 任意のレスポンスを動的にオーバーライド可能。</li>
-            <li><strong>OpenAPI対応</strong> - 作成したレスポンス構成をOpenAPI 3.0スキーマとして自動生成可能。</li>
-            <li><strong>ログ出力</strong> - リクエストやエラーログを記録。</li>
-            <li><strong>環境変数設定</strong> - <code>vlucas/phpdotenv</code> による設定管理。</li>
-        </ul>
-    </section>
-
-    <!-- Requirements Section -->
-    <section class="mt-8">
-        <h2 id="requirements" class="text-xl font-bold border-b pb-2">動作環境</h2>
-        <ul class="list-disc pl-6 mt-4">
-            <li>PHP <strong>8.3+</strong></li>
-            <li>Composer</li>
-        </ul>
-    </section>
-
-    <!-- Unit Tests Section -->
-    <section class="mt-8">
-        <h2 id="unit-tests" class="text-xl font-bold border-b pb-2">ユニットテスト</h2>
-        <p>このプロジェクトの基本的な動作についてはユニットテストを定義しています。
-            必要に応じてテストケース（ <code>tests/MockApiTest.php</code>
-            ）を拡張することでテストを追加することが可能です。</p>
-        <p><strong>テストの実行:</strong></p>
-        <div class="sourceCode" id="cb1">
-            <pre><code>php vendor/bin/phpunit</code></pre>
-        </div>
-    </section>
-
-    <!-- License Section -->
-    <section class="mt-8">
-        <h2 id="license" class="text-xl font-bold border-b pb-2">ライセンス</h2>
-        <p>このプロジェクトは <a class="text-link" href="https://raw.githubusercontent.com/ka215/MockAPI-PHP/refs/heads/main/LICENSE">MIT License</a> のもとで公開されています。</p>
-    </section>
-
-    <!-- Author Section -->
-    <section class="mt-8">
-        <h2 id="author" class="text-xl font-bold border-b pb-2">著作者</h2>
-        <ul class="list-disc pl-6 mt-4">
-            <li><strong>Name</strong>: Katsuhiko Maeno</li>
-            <li><strong>GitHub</strong>: <a class="text-link" href="https://github.com/ka215">github.com/ka215</a></li>
-        </ul>
-    </section>
-
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+    <li>PHP <strong>8.3+</strong></li>
+    <li>Composer</li>
+    </ul>
     <footer class="mt-8"><hr /><p><small>&copy; 2025 Katsuhiko Maeno</small></p></footer>
-
   </div>
 </main>
 

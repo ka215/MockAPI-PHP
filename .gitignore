@@ -1,6 +1,29 @@
+# OS/Editor temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+*.tmp
+
+# Unnecessary files for Mac/Linux
+._*
+.svn
+.idea/
+
+# Windows Related
+*.lnk
+
+# Original files used for the build (exclude only if necessary)
+sections/
+sections_ja/
+
+# Pandoc temporary file (if it exists)
+*.log
+*.aux
+
+# Others
 vendor/
 hooks/*.php
-*.log
 *.cache
 .env
 cookies.txt

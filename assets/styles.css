@@ -1,0 +1,222 @@
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+.badge-container img {
+    margin-right: 5px;
+}
+.icon-language-translation {
+    width: 1em;
+    height: 1em;
+    color: oklch(98.5% 0.001 106.423) !important; /* text-stone-50 */
+}
+.navi-link {
+    transition: color 0.2s ease-in-out;
+}
+.navi-link:hover span {
+    color: oklch(76.9% 0.188 70.08) !important; /* text-amber-500 */
+}
+footer {
+    color: oklch(55.2% 0.016 285.938); /* text-zinc-500 */
+    padding: 1em 0;
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+}
+/* Utils */
+h2 {
+    font-size: 1.25rem !important; /* text-xl (20px) */
+    font-weight: 700 !important; /* font-bold */
+    border-bottom: 1px solid #d1d5db; /* border-b with gray-300 */
+    padding-bottom: 0.5rem; /* pb-2 (8px) */
+    margin-top: 1.5rem;
+    margin-bottom: 1rem !important;
+}
+h3 {
+    font-size: 1.125rem !important; /* text-lg (18px) */
+    font-weight: 600 !important; /* font-semibold */
+    border-bottom: 1px solid #e5e7eb; /* border-b with gray-200 */
+    padding-bottom: 0.375rem; /* pb-1.5 (6px) */
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem !important;
+}
+@media (prefers-color-scheme: dark) {
+    h2 {
+        border-color: #4b5563; /* gray-600 */
+    }
+}
+p {
+    clear: both;
+    padding-bottom: 0.5rem;
+}
+a:not(:where(li a, li * a), .navi-link, >h1),
+.text-link {
+    color: #3b82f6 !important; /* text-blue-500 */
+    text-decoration: underline !important;
+    text-underline-offset: 2px; /* underline-offset-2 */
+    font-weight: 500; /* font-medium */
+    transition: color 0.2s ease-in-out;
+}
+
+a:not(:where(li a, li * a), .navi-link, >h1):hover,
+.text-link:hover {
+    color: #1d4ed8 !important; /* hover:text-blue-700 */
+}
+@media (prefers-color-scheme: dark) {
+    a:not(:where(li a, li * a), .navi-link, >h1),
+    .text-link {
+        color: #60a5fa; /* text-blue-400 */
+    }
+    a:not(:where(li a, li * a), .navi-link, >h1):hover,
+    .text-link:hover {
+        color: #93c5fd; /* hover:text-blue-300 */
+    }
+}
+code:not(:where(pre code, pre * code)) {
+    background-color: oklch(87.2% 0.01 258.338); /* bg-gray-200 */
+    color: oklch(27.8% 0.033 256.848); /* text-gray-800 */
+    font-size: 0.875rem; /* text-sm */
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; /* font-mono */
+    padding: 0.125rem 0.25rem; /* px-1 py-0.5 */
+    border-radius: 0.25rem; /* rounded */
+}
+.sourceCode,
+pre:not(.sourceCode pre) {
+    background-color: oklch(27.8% 0.033 256.848); /* bg-gray-800 */
+    color: oklch(96.7% 0.003 264.542); /* text-gray-100 */
+    font-size: 0.875rem; /* text-sm */
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    border-radius: 0.375rem; /* rounded-md */
+    padding: 1rem; /* p-4 */
+    overflow-x: auto;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-md */
+}
+/* JSON/Yaml/xml Code Block Styles */
+.sourceCode.json,
+.sourceCode.yaml,
+.sourceCode.php,
+.sourceCode.xml {
+    background-color: transparent; /*#1f2937; /* Tailwind: bg-gray-800 */
+    color: #f3f4f6; /* Tailwind: text-gray-100 */
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.875rem; /* text-sm */
+    border-radius: 0.375rem; /* rounded-md */
+    padding: 1rem; /* p-4 */
+    overflow-x: auto;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); /* shadow-md */
+    margin: 0; /* 1rem 0;*/
+}
+.sourceCode.json .fu,
+.sourceCode.yaml .fu,
+.sourceCode.php .fu,
+.sourceCode.xml .fu { /* function etc */
+    color: #9ca3af; /* gray-400 */
+}
+.sourceCode.json .dt,
+.sourceCode.yaml .dt,
+.sourceCode.php .dt,
+.sourceCode.xml .dt { /* key */
+    color: #93c5fd; /* blue-300 */
+}
+.sourceCode.json .st,
+.sourceCode.yaml .st,
+.sourceCode.php .st,
+.sourceCode.xml .st { /* string value */
+    color: #facc15; /* yellow-400 */
+}
+.sourceCode.json .dv,
+.sourceCode.yaml .dv,
+.sourceCode.php .dv,
+.sourceCode.xml .dv { /* number value */
+    color: #6ee7b7; /* green-300 */
+}
+.sourceCode.json a,
+.sourceCode.yaml a,
+.sourceCode.php a,
+.sourceCode.xml a {
+    text-decoration: none;
+    color: inherit;
+    pointer-events: none;
+}
+.sourceCode.json a::before,
+.sourceCode.yaml a::before,
+.sourceCode.php a::before,
+.sourceCode.xml a::before {
+    content: '';
+    display: none;
+}
+.sourceCode + h2,
+.sourceCode + h3,
+.sourceCode + h4 {
+    margin-top: 1rem;
+}
+.sourceCode + p,
+pre + p {
+    margin-top: 0.5rem;
+}
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* border-collapse */
+    font-size: 0.875rem; /* text-sm */
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    border: 1px solid #d1d5db; /* gray-300 */
+    margin-bottom: 1rem; /* mb-4 */
+}
+table th,
+table td {
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    border: 1px solid #d1d5db; /* gray-300 */
+    text-align: left;
+    vertical-align: top;
+}
+table th {
+    font-weight: 600; /* font-semibold */
+    color: #374151; /* text-gray-700 */
+    background-color: oklch(92.8% 0.006 264.531); /* bg-gray-200 */
+}
+table tr:nth-child(even) td {
+    background-color: #f3f4f6; /* bg-gray-100 */
+}
+table tr:nth-child(odd) td {
+    background-color: #f9fafb; /* bg-gray-50 */
+}
+table td {
+    color: #4b5563; /* text-gray-600 */
+}
+@media (prefers-color-scheme: dark) {
+    table {
+        border-color: #374151; /* gray-700 */
+    }
+    table th {
+        background-color: #1f2937; /* bg-gray-800 */
+        color: #f3f4f6; /* text-gray-100 */
+        border-color: #374151;
+    }
+    table td {
+        color: #d1d5db; /* text-gray-300 */
+        border-color: #374151;
+    }
+    table tr:nth-child(even) td {
+        background-color: #111827; /* bg-gray-900 */
+    }
+}
+h2[id^="comparison"]+p+table th:nth-child(2) {
+    background-color: oklch(96.2% 0.059 95.617); /* bg-amber-100 */
+}
+h2[id^="comparison"]+p+table td:nth-child(2) {
+    background-color: oklch(98.7% 0.026 102.212); /* bg-yellow-50 */
+}
+h2[id="features"]+ul>li {
+    padding-bottom: 0.25rem;
+}
+h2[id="features"]+ul ul {
+    margin-top: 0.25rem;
+    margin-left: 2rem;
+    list-style-type: disc;
+}
