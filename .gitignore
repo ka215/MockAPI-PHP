@@ -27,3 +27,4 @@ hooks/*.php
 *.cache
 .env
 cookies.txt
+.github/workflows/
