@@ -48,6 +48,15 @@
     <aside id="default-sidebar" class="relative top-0 left-0 z-0 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
        <div class="h-full px-2 py-2 overflow-y-auto">
           <ul class="pt-4 space-y-2 font-medium">
+            <li>
+                <a href="#" class="flex items-center p-2 text-gray-500 rounded-lg dark:text-gray-500 group cursor-default">
+                    <svg class="w-6 h-6 text-gray-400 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
+                        <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
+                    </svg>
+                    <span class="ms-3">Overview</span>
+                </a>
+             </li>
              <li>
                 <a href="docs/features.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 group">
                     <svg class="w-6 h-6 text-gray-500 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -108,7 +117,7 @@
                         <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z"/>
                         <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z"/>
                     </svg>
-                    <span class="ms-3">Comparison Table</span>
+                    <span class="ms-3">Product Comparison</span>
                 </a>
              </li>
           </ul>
@@ -126,11 +135,37 @@
         <img src="https://img.shields.io/github/last-commit/ka215/MockAPI-PHP" alt="GitHub last commit">
     </div>
 
-    <p class="text-center">
-        This project is a lightweight mock API server built with PHP.<br>
-        It allows request simulation without using real APIs in development and testing environments.<br>
-        Supports dynamic responses, polling functionality, and authentication control using environment variables (<code>.env</code>).
-    </p>
+    <div class="text-left mx-auto">
+        <p class="text-xl dark:text-white mb-4">
+            A <strong>lightweight mock API server for PHP developers</strong>, designed for rapid prototyping, testing, and API-first development.<br>  
+            MockAPI-PHP enables you to simulate RESTful API responses using JSON or text files without needing a real backend.<br>
+        </p>
+
+        <blockquote class="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            <p class="italic font-medium leading-relaxed text-gray-900 dark:text-white">Supports OpenAPI 3.0 schema auto-generation based on response data.</p>
+        </blockquote>
+    </div>
+
+    <!-- Why Use This Tool? Section -->
+    <section class="mt-8">
+        <h2 id="why-use-this-tool" class="text-xl font-bold border-b pb-2">Why Use This Tool?</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li>You want a <strong>local mock API server</strong> that's simple and fast to set up.</li>
+            <li>You prefer <strong>file-based mocking</strong> (no GUI or code compilation needed).</li>
+            <li>You need <strong>flexible dynamic responses</strong>, custom delays, or error simulations.</li>
+            <li>You want to <strong>auto-generate OpenAPI specs</strong> from actual mock responses.</li>
+        </ul>
+    </section>
+
+    <!-- Ideal For Section -->
+    <section class="mt-8">
+        <h2 id="ideal-for" class="text-xl font-bold border-b pb-2">Ideal For</h2>
+        <ul class="list-disc pl-6 mt-4">
+            <li>PHP developers building or testing frontend-backend integrations.</li>
+            <li>QA teams testing API responses without depending on a real server.</li>
+            <li>Teams using <strong>API-first workflows</strong> with tools like Swagger, Prism, Postman.</li>
+        </ul>
+    </section>
 
     <!-- Features Section -->
     <section class="mt-8">

@@ -6,9 +6,10 @@
 ![GitHub issues](https://img.shields.io/github/issues/ka215/MockAPI-PHP)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ka215/MockAPI-PHP)
 
-This project is a lightweight mock API server built with PHP.  
-It allows request simulation without using real APIs in development and testing environments.  
-It supports dynamic responses, polling functionality, and authentication control using environment variables (`.env`).
+A **lightweight mock API server for PHP developers**, designed for rapid prototyping, testing, and API-first development.  
+MockAPI-PHP enables you to simulate RESTful API responses using JSON or text files without needing a real backend.
+
+> Supports OpenAPI 3.0 schema auto-generation based on response data.
 
 <div align="right"><small>
 
@@ -17,6 +18,19 @@ It supports dynamic responses, polling functionality, and authentication control
 </small></div>
 
 ---
+
+## Why Use This Tool?
+
+- You want a **local mock API server** that's simple and fast to set up.
+- You prefer **file-based mocking** (no GUI or code compilation needed).
+- You need **flexible dynamic responses**, custom delays, or error simulations.
+- You want to **auto-generate OpenAPI specs** from actual mock responses.
+
+## Ideal For
+
+- PHP developers building or testing frontend-backend integrations.
+- QA teams testing API responses without depending on a real server.
+- Teams using **API-first workflows** with tools like Swagger, Prism, Postman.
 
 ## Features
 

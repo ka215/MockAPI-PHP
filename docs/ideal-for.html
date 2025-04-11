@@ -128,89 +128,14 @@
   </div>
 
   <div class="container mx-auto p-6 overflow-y-auto">
-    <h2 id="features">Features</h2>
+    <h2 id="ideal-for">Ideal For</h2>
     <ul>
-    <li><strong>Automatic Endpoint Registration</strong>
-    <ul>
-    <li>Scans the <code>responses/</code> folder and automatically
-    registers endpoints based on the directory structure.</li>
-    <li>The API base path can be configured via environment
-    variables.</li>
-    <li>Supports dynamic parameter parsing such as
-    <code>GET users/{group}/{limit}</code>.</li>
-    </ul></li>
-    <li><strong>Dynamic Response Loading</strong>
-    <ul>
-    <li><code>.json</code> → Returns JSON response.</li>
-    <li><code>.txt</code> → Returns plain text response.</li>
-    </ul></li>
-    <li><strong>Polling Support</strong>
-    <ul>
-    <li>If multiple files such as <code>1.json</code>,
-    <code>2.json</code>, etc., are prepared, responses will change based
-    on request count.</li>
-    <li>Polling is executed per client, and can be reset via
-    <code>POST: /reset_polling</code>.</li>
-    </ul></li>
-    <li><strong>Custom Responses</strong>
-    <ul>
-    <li>Use query parameter <code>mock_response</code> to dynamically
-    switch responses. Example:
-    <code>GET /users?mock_response=success</code> → Returns
-    <code>responses/users/get/success.json</code>.</li>
-    <li>Use <code>mock_content_type</code> to specify response
-    <code>Content-Type</code>. Example:
-    <code>GET /others?mock_response=xml&amp;mock_content_type=application/xml</code>
-    → Returns <code>responses/others/get/xml.txt</code> as XML
-    format.</li>
-    </ul></li>
-    <li><strong>Error Responses</strong>
-    <ul>
-    <li>Define error responses such as
-    <code>responses/errors/404.json</code>.</li>
-    </ul></li>
-    <li><strong>Response Delay</strong>
-    <ul>
-    <li>Specify <code>"mockDelay": 1000</code> (1 second) in a JSON
-    response file to delay the response.</li>
-    </ul></li>
-    <li><strong>Custom Hooks</strong>
-    <ul>
-    <li>Register custom hooks for each method + endpoint request to
-    override response content. Example: <code>GET /users</code> request
-    can be handled by a custom hook
-    <code>hooks/get_users.php</code>.</li>
-    </ul></li>
-    <li><strong>OpenAPI Schema Support</strong>
-    <ul>
-    <li>Equipped with a function to automatically generate OpenAPI 3.0
-    schema based on JSON responses.</li>
-    <li>The <code>example</code> items in the schema are also
-    appropriately trimmed and padded to avoid excess response data.</li>
-    <li>It uses <code>opis/json-schema</code> for validation and
-    automatically checks for schema consistency.</li>
-    </ul></li>
-    <li><strong>Logging</strong>
-    <ul>
-    <li><code>request.log</code> stores request details (headers, query,
-    body).</li>
-    <li><code>response.log</code> stores response details.</li>
-    <li><code>auth.log</code> stores authentication failures, and
-    <code>error.log</code> stores generic errors.</li>
-    <li>All logs are linked by a request ID for traceability.</li>
-    <li>Validation errors during automatic OpenAPI schema generation can
-    be tracked in <code>validation-error.log</code>.</li>
-    </ul></li>
-    <li><strong>Configuration via Environment Variables</strong>
-    <ul>
-    <li>Uses <code>vlucas/phpdotenv</code> to read environment
-    variables.</li>
-    <li><code>.env</code> can define server settings such as
-    <code>PORT</code>, base API path, temporary file storage
-    (<code>cookies.txt</code>, etc.), and logging paths.</li>
-    <li>Simple authentication via <code>API_KEY</code> and
-    <code>CREDENTIAL</code>.</li>
-    </ul></li>
+    <li>PHP developers building or testing frontend-backend
+    integrations.</li>
+    <li>QA teams testing API responses without depending on a real
+    server.</li>
+    <li>Teams using <strong>API-first workflows</strong> with tools like
+    Swagger, Prism, Postman.</li>
     </ul>
     <footer class="mt-8"><hr /><p><small>&copy; 2025 Katsuhiko Maeno</small></p></footer>
   </div>
