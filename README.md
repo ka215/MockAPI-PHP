@@ -1,8 +1,15 @@
 # MockAPI-PHP
 
-This project is a lightweight mock API server built with PHP.  
-It allows request simulation without using real APIs in development and testing environments.  
-It supports dynamic responses, polling functionality, and authentication control using environment variables (`.env`).
+![PHP Version](https://img.shields.io/badge/PHP-8.3%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub release](https://img.shields.io/github/v/release/ka215/MockAPI-PHP)
+![GitHub issues](https://img.shields.io/github/issues/ka215/MockAPI-PHP)
+![GitHub last commit](https://img.shields.io/github/last-commit/ka215/MockAPI-PHP)
+
+A **lightweight mock API server for PHP developers**, designed for rapid prototyping, testing, and API-first development.  
+MockAPI-PHP enables you to simulate RESTful API responses using JSON or text files without needing a real backend.
+
+> Supports OpenAPI 3.0 schema auto-generation based on response data.
 
 <div align="right"><small>
 
@@ -11,6 +18,19 @@ It supports dynamic responses, polling functionality, and authentication control
 </small></div>
 
 ---
+
+## Why Use This Tool?
+
+- You want a **local mock API server** that's simple and fast to set up.
+- You prefer **file-based mocking** (no GUI or code compilation needed).
+- You need **flexible dynamic responses**, custom delays, or error simulations.
+- You want to **auto-generate OpenAPI specs** from actual mock responses.
+
+## Ideal For
+
+- PHP developers building or testing frontend-backend integrations.
+- QA teams testing API responses without depending on a real server.
+- Teams using **API-first workflows** with tools like Swagger, Prism, Postman.
 
 ## Features
 
@@ -101,87 +121,100 @@ mock_api_server/
       └── validation-error.log   # OpenAPI Schema Validation Error Logs
 ```
 
+## Requirements
+
+- PHP **8.3+**
+- Composer
+
 ## Usage
 
-1. #### Install Dependencies via Composer
-    ```bash
-    composer install
-    ```
-2. #### Starting the Mock API Server
-    The mock API server can be started using the following methods.
-    ##### Recommended: Using `start_server.php`
-    This script automatically applies the `PORT` specified in `.env` and clears temporary files.
-    ```bash
-    php start_server.php
-    ```
-    ##### Manually Using PHP Built-in Server
-    ```bash
-    php -S localhost:3030 -t .
-    ```
-3. #### API Request Examples
-    - **GET Request**
-      ```bash
-      curl -X GET http://localhost:3030/api/users
-      ```
-    - **Polling Enabled GET Request**
-      ```bash
-      curl -b temp/cookies.txt -c temp/cookies.txt -X GET http://localhost:3030/api/users
-      ```
-    - **POST Request**
-      ```bash
-      curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
-      ```
-    - **PUT Request (data updating)**
-      ```bash
-      curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
-      ```
-    - **DELETE Request**
-      ```bash
-      curl -X DELETE http://localhost:3030/api/users/1
-      ```
-    - **Custom Response Request**
-      ```bash
-      curl -X GET "http://localhost:3030/api/users?mock_response=success"
-      ```
-    - **Check Version**
-      ```bash
-      curl -X GET http://localhost:3030/api/version
-      ```
-4. #### `responses/` Configuration
-    The mock API responses are stored as JSON or text files in the `responses/` directory.
+### 1. Install Dependencies via Composer
 
-    - **Example Response Structure**
-      ```
-      responses/
-      ├── products/
-      │   ├── get/
-      │   │   ├── default.json # Default response (used for 3rd to 8th requests and from the 10th request onward)
-      │   │   ├── 1.json # Response for the 1st request
-      │   │   ├── 2.json # Response for the 2nd request
-      │   │   └── 9.json # Response for the 9th request
-      │   ├── post/
-      │   │   ├── success.json # Response for a successful product creation
-      │   │   └── 400.json # Response for a validation error
-      │   ├── patch/
-      │   │   └── success.json # Response for a successful product update
-      │   ├── delete/
-      │   │   └── success.json # Response for a successful product deletion
-      │   └─…
-      └─…
-      ```
+  ```bash
+  composer install
+  ```
 
-    - **Error Response Configuration**
-      Example: `responses/errors/404.json`
-      ```json
-      {
-        "error": "Resource not found",
-        "code": 404
-      }
-      ```
-      Example: `responses/errors/500.txt`
-      ```
-      Internal Server Error
-      ```
+### 2. Starting the Mock API Server
+  The mock API server can be started using the following methods.
+
+  **Recommended: Using `start_server.php`**
+
+  This script automatically applies the `PORT` specified in `.env` and clears temporary files.
+  ```bash
+  php start_server.php
+  ```
+
+  **Manually Using PHP Built-in Server**
+
+  ```bash
+  php -S localhost:3030 -t .
+  ```
+
+### 3. API Request Examples
+  - **GET Request**
+    ```bash
+    curl -X GET http://localhost:3030/api/users
+    ```
+  - **Polling Enabled GET Request**
+    ```bash
+    curl -b temp/cookies.txt -c temp/cookies.txt -X GET http://localhost:3030/api/users
+    ```
+  - **POST Request**
+    ```bash
+    curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
+    ```
+  - **PUT Request (data updating)**
+    ```bash
+    curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
+    ```
+  - **DELETE Request**
+    ```bash
+    curl -X DELETE http://localhost:3030/api/users/1
+    ```
+  - **Custom Response Request**
+    ```bash
+    curl -X GET "http://localhost:3030/api/users?mock_response=success"
+    ```
+  - **Check Version**
+    ```bash
+    curl -X GET http://localhost:3030/api/version
+    ```
+
+### 4. `responses/` Configuration
+  The mock API responses are stored as JSON or text files in the `responses/` directory.
+
+  - **Example Response Structure**
+    ```
+    responses/
+    ├── products/
+    │   ├── get/
+    │   │   ├── default.json # Default response (used for 3rd to 8th requests and from the 10th request onward)
+    │   │   ├── 1.json # Response for the 1st request
+    │   │   ├── 2.json # Response for the 2nd request
+    │   │   └── 9.json # Response for the 9th request
+    │   ├── post/
+    │   │   ├── success.json # Response for a successful product creation
+    │   │   └── 400.json # Response for a validation error
+    │   ├── patch/
+    │   │   └── success.json # Response for a successful product update
+    │   ├── delete/
+    │   │   └── success.json # Response for a successful product deletion
+    │   └─…
+    └─…
+    ```
+
+  - **Error Response Configuration**
+    Example: `responses/errors/404.json`
+    ```json
+    {
+      "error": "Resource not found",
+      "code": 404
+    }
+    ```
+    Example: `responses/errors/500.txt`
+    ```
+    Internal Server Error
+    ```
 
 ## Environment Variables (.env Configuration)
 
@@ -278,11 +311,12 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
       - run: composer install --no-dev
-      - run: php generate-schema.php json
+      - run: php generate-schema.php yaml
       - name: Upload schema
-        uses: actions/upload-artifact@v3
+        if: hashFiles('schema/openapi.yaml') != ''
+        uses: actions/upload-artifact@v4
         with:
           name: openapi-schema
           path: schema/openapi.json

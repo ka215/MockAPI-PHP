@@ -1,8 +1,15 @@
 # MockAPI-PHP
 
-このプロジェクトは、PHP製の軽量なモックAPIサーバーです。  
-開発・テスト環境で実際のAPIを使用せずに、リクエストのシミュレーションが可能です。  
-動的なレスポンスやポーリング機能を簡単に設定でき、環境変数 `.env` を使用した認証制御も可能です。
+![PHP Version](https://img.shields.io/badge/PHP-8.3%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub release](https://img.shields.io/github/v/release/ka215/MockAPI-PHP)
+![GitHub issues](https://img.shields.io/github/issues/ka215/MockAPI-PHP)
+![GitHub last commit](https://img.shields.io/github/last-commit/ka215/MockAPI-PHP)
+
+このツールは **PHP開発者向けの軽量モックAPIサーバー** で、迅速なプロトタイピング、テスト、APIファースト開発向けに設計されています。
+MockAPI-PHPを使用すると、実際のバックエンドを必要とせずに、JSONまたはテキストファイルを使用してRESTful APIレスポンスをシミュレートできます。
+
+> レスポンスデータに基づくOpenAPI 3.0スキーマの自動生成をサポートします。
 
 <div align="right"><small>
 
@@ -11,6 +18,19 @@
 </small></div>
 
 ---
+
+## このツールを使用する理由
+
+- シンプルかつ迅速にセットアップできる **ローカルモック API サーバー** が必要な場合。
+- **ファイルベースのモック** が必要な場合（GUI やコードのコンパイルは不要）。
+- **柔軟な動的レスポンス**、カスタム遅延、またはエラーシミュレーションが必要な場合。
+- 実際のモックレスポンスから **OpenAPI 仕様を自動生成** したい場合。
+
+## 最適な用途
+
+- フロントエンドとバックエンドの統合を構築またはテストする PHP 開発者。
+- 実サーバーに依存せずに API レスポンスをテストする QA チーム。
+- Swagger、Prism、Postman などのツールを使用して **API ファーストワークフロー** を使用するチーム。
 
 ## 特徴
 
@@ -102,85 +122,98 @@ mock_api_server/
       └── validation-error.log   # OpenAPI スキーマバリデーションエラーログ
 ```
 
+## 動作環境
+
+- PHP **8.3以上**
+- Composer
+
 ## 使い方
 
-1. #### Composer のインストール
-    ```bash
-    composer install
-    ```
-2. #### サーバーの起動方法
-    Mock API Server を起動するには、以下のいずれかの方法を利用してください。
-    ##### 推奨: `start_server.php` を使用
-    このスクリプトを使うと、環境変数 `.env` で指定した `PORT` を自動で反映し、`temp/` 内の `.txt` ファイルもクリアされます。
-    ```bash
-    php start_server.php
-    ```
-    ##### 手動で PHP 内蔵サーバーを起動
-    ```bash
-    php -S localhost:3030 -t .
-    ```
-3. #### APIリクエスト例
-    - **GETリクエスト**
-      ```bash
-      curl -X GET http://localhost:3030/api/users
-      ```
-    - **GETリクエスト（ポーリング対応）**
-      ```bash
-      curl -b temp/cookies.txt -c temp/cookies.txt -X GET http://localhost:3030/api/users
-      ```
-    - **POSTリクエスト**
-      ```bash
-      curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
-      ```
-    - **PUTリクエスト（データ更新）**
-      ```bash
-      curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
-      ```
-    - **DELETEリクエスト**
-      ```bash
-      curl -X DELETE http://localhost:3030/api/users/1
-      ```
-    - **カスタムレスポンス**
-      ```bash
-      curl -X GET "http://localhost:3030/api/users?mock_response=success"
-      ```
-    - **バージョン確認用**
-      ```bash
-      curl -X GET http://localhost:3030/api/version
-      ```
-4. #### `responses/` の設定方法
-    モックAPIのレスポンスは `responses/` ディレクトリ内に JSON もしくはテキストファイルとして保存します。
-    - **レスポンスの構成例**
-      ```
-      responses/
-      ├── products/
-      │   ├── get/
-      │   │   ├── default.json # デフォルトレスポンス（3～8回目と10回目以降のレスポンス）
-      │   │   ├── 1.json # 1回目のリクエストで返すレスポンス
-      │   │   ├── 2.json # 2回目のリクエストで返すレスポンス
-      │   │   └── 9.json # 9回目のリクエストで返すレスポンス
-      │   ├── post/
-      │   │   ├── success.json # Product作成成功時のレスポンス
-      │   │   └── 400.json # バリデーションエラー時のレスポンス
-      │   ├── patch/
-      │   │   └── success.json # Product更新成功時のレスポンス
-      │   ├── delete/
-      │   │   └── success.json # Product削除成功時のレスポンス
-      │   └─…
-      └─…
-      ```
-    - **エラーレスポンスの設定**
-      例: `responses/errors/404.json`
-      ```json
-      {
-        "error": "Resource not found",
-        "code": 404
-      }
-      ```
-      例: `responses/errors/500.txt`
-      ```
-      Internal Server Error
-      ```
+### 1. Composer のインストール
+
+```bash
+composer install
+```
+
+### 2. サーバーの起動方法
+Mock API Server を起動するには、以下のいずれかの方法を利用してください。
+
+**推奨: `start_server.php` を使用**
+このスクリプトを使うと、環境変数 `.env` で指定した `PORT` を自動で反映し、`temp/` 内の `.txt` ファイルもクリアされます。
+```bash
+php start_server.php
+```
+
+**手動で PHP 内蔵サーバーを起動**
+```bash
+php -S localhost:3030 -t .
+```
+
+### 3. APIリクエスト例
+- **GETリクエスト**
+  ```bash
+  curl -X GET http://localhost:3030/api/users
+  ```
+- **GETリクエスト（ポーリング対応）**
+  ```bash
+  curl -b temp/cookies.txt -c temp/cookies.txt -X GET http://localhost:3030/api/users
+  ```
+- **POSTリクエスト**
+  ```bash
+  curl -X POST http://localhost:3030/api/users -H "Content-Type: application/json" -d '{"name": "New User"}'
+  ```
+- **PUTリクエスト（データ更新）**
+  ```bash
+  curl -X PUT http://localhost:3030/api/users/1 -H "Content-Type: application/json" -d '{"name": "Updated Name"}'
+  ```
+- **DELETEリクエスト**
+  ```bash
+  curl -X DELETE http://localhost:3030/api/users/1
+  ```
+- **カスタムレスポンス**
+  ```bash
+  curl -X GET "http://localhost:3030/api/users?mock_response=success"
+  ```
+- **バージョン確認用**
+  ```bash
+  curl -X GET http://localhost:3030/api/version
+  ```
+
+### 4. `responses/` の設定方法
+モックAPIのレスポンスは `responses/` ディレクトリ内に JSON もしくはテキストファイルとして保存します。
+
+- **レスポンスの構成例**
+  ```
+  responses/
+  ├── products/
+  │   ├── get/
+  │   │   ├── default.json # デフォルトレスポンス（3～8回目と10回目以降のレスポンス）
+  │   │   ├── 1.json # 1回目のリクエストで返すレスポンス
+  │   │   ├── 2.json # 2回目のリクエストで返すレスポンス
+  │   │   └── 9.json # 9回目のリクエストで返すレスポンス
+  │   ├── post/
+  │   │   ├── success.json # Product作成成功時のレスポンス
+  │   │   └── 400.json # バリデーションエラー時のレスポンス
+  │   ├── patch/
+  │   │   └── success.json # Product更新成功時のレスポンス
+  │   ├── delete/
+  │   │   └── success.json # Product削除成功時のレスポンス
+  │   └─…
+  └─…
+  ```
+
+- **エラーレスポンスの設定**
+  例: `responses/errors/404.json`
+  ```json
+  {
+    "error": "Resource not found",
+    "code": 404
+  }
+  ```
+  例: `responses/errors/500.txt`
+  ```
+  Internal Server Error
+  ```
 
 ## 環境変数（.env 設定）
 
@@ -273,11 +306,12 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
       - run: composer install --no-dev
       - run: php generate-schema.php json
       - name: Upload schema
-        uses: actions/upload-artifact@v3
+        if: hashFiles('schema/openapi.yaml') != ''
+        uses: actions/upload-artifact@v4
         with:
           name: openapi-schema
           path: schema/openapi.json
@@ -291,6 +325,7 @@ jobs:
 
 ### カスタムレスポンス
 クエリパラメータ `mock_response` を指定することで、動的にレスポンスを変更できます。
+
 | リクエスト | 取得されるレスポンスファイル |
 |------------|------------------------------|
 | `GET /users` | `responses/users/get/default.json` |
