@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0] - 2025-07-17
+### Added
+- Added the ability to define CORS headers in the .env environment variable.
+  ```
+  CORS_ALLOW_ORIGIN=example.com
+  CORS_ALLOW_METHODS=GET, POST, DELETE, PATCH, PUT, OPTIONS
+  CORS_ALLOW_HEADERS=Origin, X-Requested-With, Content-Type, Accept, x-api-key, x-csrf-token
+  CORS_ALLOW_CREDENTIALS=true
+  ```
+- The authorization process can be extended by providing a hook file `/hooks/authorization.php`.
+- Added polyfills and helper methods for use with custom Hooks.
+
 ## [1.2.0] - 2025-04-01
 ### Added
 - Added feature of OpenAPI 3.0 schema auto-generation.
@@ -24,6 +36,7 @@
 ---
 
 #### 🔗 GitHub Releases
+[1.3.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.3.0
 [1.2.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.1.0  
 [1.0.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.0.0  

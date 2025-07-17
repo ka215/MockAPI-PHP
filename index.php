@@ -24,7 +24,7 @@ if (file_exists(__DIR__ . '/.env')) {
 }
 
 // Set timezone
-$TIMEZONE = isset($_ENV['TIMEZONE']) ? trim($_ENV['TIMEZONE']) : 'UTC';
+$TIMEZONE = isset($_ENV['TIMEZONE']) && !empty($_ENV['TIMEZONE']) ? trim($_ENV['TIMEZONE']) : 'UTC';
 date_default_timezone_set($TIMEZONE);
 
 $BASE_PATH = isset($_ENV['BASE_PATH']) ? trim($_ENV['BASE_PATH']) : '/api';
@@ -48,9 +48,16 @@ $http_status = require __DIR__ . '/http_status.php';
 session_start();
 
 // Set CORS headers
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, DELETE, PATCH, PUT, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+$allow_origin  = isset($_ENV['CORS_ALLOW_ORIGIN']) && !empty($_ENV['CORS_ALLOW_ORIGIN']) ? trim($_ENV['CORS_ALLOW_ORIGIN') : '*';
+$allow_methods = isset($_ENV['CORS_ALLOW_METHODS']) && !empty($_ENV['CORS_ALLOW_METHODS']) ? trim($_ENV['CORS_ALLOW_METHODS') : 'GET, POST, DELETE, PATCH, PUT, OPTIONS';
+$allow_headers = isset($_ENV['CORS_ALLOW_HEADERS']) && !empty($_ENV['CORS_ALLOW_HEADERS']) ? trim($_ENV['CORS_ALLOW_HEADERS']) : 'Origin, Content-Type, Accept';
+$allow_credentials = isset($_ENV['CREDENTIAL']) || (isset($_ENV['CORS_ALLOW_CREDENTIALS']) && $_ENV['CORS_ALLOW_CREDENTIALS']);
+header("Access-Control-Allow-Origin: {$allow_origin}");
+header("Access-Control-Allow-Methods: {$allow_methods}");
+header("Access-Control-Allow-Headers: {$allow_headers}");
+if ($allow_credentials) {
+    header("Access-Control-Allow-Credentials: true");
+}
 
 // Immediately exit on OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -79,9 +86,26 @@ $request_data = [];
 // Parse path parameters
 $route_template = detectDynamicRoute($segments, $request_data);
 
+// Require if polyfill is needed
+$polyfill_file = __DIR__ . "/libs/polyfills.php";
+if (file_exists($polyfill_file)) {
+    require $polyfill_file;
+}
+
+// Require helper methods
+$utils_file = __DIR__ . "/libs/utils.php";
+if (file_exists($utils_file)) {
+    require $utils_file;
+}
+
 // Authorization
-if (!authorizeRequest($request_id)) {
-    unauthorizedResponse($request_id);
+$auth_hook_file = __DIR__ . "/hooks/authorization.php";
+if (file_exists($auth_hook_file)) {
+    require $auth_hook_file;
+} else {
+    if (!authorizeRequest($request_id)) {
+        unauthorizedResponse($request_id);
+    }
 }
 
 // Log the request
@@ -95,9 +119,25 @@ $request_data['mock_content_type'] = $query_params['mock_content_type'] ?? null;
 unset($query_params['mock_content_type']); // Remove `mock_content_type`
 $request_data['query_params'] = $query_params;
 
-// Retrieve JSON body (for POST, PATCH, PUT requests)
-$json_body = file_get_contents('php://input');
-$request_data['body'] = json_decode($json_body, true) ?? [];
+// Retrieve request body (for POST, PATCH, PUT requests)
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+if (
+    stripos($contentType, 'application/json') !== false
+) {
+    // If JSON format
+    $json_body = file_get_contents('php://input');
+    $request_data['body'] = json_decode($json_body, true) ?? [];
+} elseif (
+    stripos($contentType, 'multipart/form-data') !== false
+) {
+    // If multipart format
+    $request_data['body'] = $_POST;
+    $request_data['files'] = $_FILES;
+} else {
+    // Fallback if URL encode format etc.
+    $request_data['body'] = $_POST;
+    $request_data['files'] = $_FILES;
+}
 
 // Special route: Version check endpoint
 if ($method === 'get' && $path === '/version') {

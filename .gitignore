@@ -15,3 +15,5 @@ responses/*
 
 schema/*.json
 schema/*.yaml
+
+sessions/*
