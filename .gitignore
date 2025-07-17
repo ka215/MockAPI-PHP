@@ -17,3 +17,4 @@ schema/*.json
 schema/*.yaml
 
 sessions/*
+temp/*
