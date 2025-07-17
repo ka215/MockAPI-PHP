@@ -5,8 +5,8 @@
 - Added the ability to define CORS headers in the .env environment variable.
   ```
   CORS_ALLOW_ORIGIN=example.com
-  CORS_ALLOW_METHODS=GET, POST, DELETE, PATCH, PUT, OPTIONS
-  CORS_ALLOW_HEADERS=Origin, X-Requested-With, Content-Type, Accept, x-api-key, x-csrf-token
+  CORS_ALLOW_METHODS="GET, POST, DELETE, PATCH, PUT, OPTIONS"
+  CORS_ALLOW_HEADERS="Origin, X-Requested-With, Content-Type, Accept, x-api-key, x-csrf-token"
   CORS_ALLOW_CREDENTIALS=true
   ```
 - The authorization process can be extended by providing a hook file `/hooks/authorization.php`.
