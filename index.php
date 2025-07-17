@@ -48,10 +48,14 @@ $http_status = require __DIR__ . '/http_status.php';
 session_start();
 
 // Set CORS headers
-$allow_origin  = isset($_ENV['CORS_ALLOW_ORIGIN']) && !empty($_ENV['CORS_ALLOW_ORIGIN']) ? trim($_ENV['CORS_ALLOW_ORIGIN']) : '*';
-$allow_methods = isset($_ENV['CORS_ALLOW_METHODS']) && !empty($_ENV['CORS_ALLOW_METHODS']) ? trim($_ENV['CORS_ALLOW_METHODS']) : 'GET, POST, DELETE, PATCH, PUT, OPTIONS';
-$allow_headers = isset($_ENV['CORS_ALLOW_HEADERS']) && !empty($_ENV['CORS_ALLOW_HEADERS']) ? trim($_ENV['CORS_ALLOW_HEADERS']) : 'Origin, Content-Type, Accept';
-$allow_credentials = isset($_ENV['CREDENTIAL']) || (isset($_ENV['CORS_ALLOW_CREDENTIALS']) && $_ENV['CORS_ALLOW_CREDENTIALS']);
+$allow_origin  = isset($_ENV['CORS_ALLOW_ORIGIN']) && !empty($_ENV['CORS_ALLOW_ORIGIN'])
+    ? trim($_ENV['CORS_ALLOW_ORIGIN']) : '*';
+$allow_methods = isset($_ENV['CORS_ALLOW_METHODS']) && !empty($_ENV['CORS_ALLOW_METHODS'])
+    ? trim($_ENV['CORS_ALLOW_METHODS']) : 'GET, POST, DELETE, PATCH, PUT, OPTIONS';
+$allow_headers = isset($_ENV['CORS_ALLOW_HEADERS']) && !empty($_ENV['CORS_ALLOW_HEADERS'])
+    ? trim($_ENV['CORS_ALLOW_HEADERS']) : 'Origin, Content-Type, Accept';
+$allow_credentials = isset($_ENV['CREDENTIAL'])
+    || (isset($_ENV['CORS_ALLOW_CREDENTIALS']) && $_ENV['CORS_ALLOW_CREDENTIALS']);
 header("Access-Control-Allow-Origin: {$allow_origin}");
 header("Access-Control-Allow-Methods: {$allow_methods}");
 header("Access-Control-Allow-Headers: {$allow_headers}");
