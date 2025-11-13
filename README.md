@@ -128,6 +128,8 @@ mock_api_server/
 
 ## Usage
 
+> **📝 Note**: The instructions below are for local development using PHP's built-in server. For deploying to a hosted environment (Apache/Nginx) or subdirectory installation, see the **[Deployment Guide](./DEPLOYMENT.md)**.
+
 ### 1. Install Dependencies via Composer
 
   ```bash

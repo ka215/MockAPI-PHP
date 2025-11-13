@@ -1,0 +1,37 @@
+# MockAPI-PHP - Apache Configuration Sample
+# 
+# IMPORTANT: This file should be placed in the PARENT directory of MockAPI-PHP,
+# not inside the MockAPI-PHP directory itself.
+#
+# Expected directory structure:
+#   /var/www/html/              (Document root)
+#   ├── .htaccess               (Copy this file here and rename to .htaccess)
+#   ├── index.html              (Your existing site files)
+#   └── MockAPI-PHP/            (Git cloned directory)
+#       ├── index.php
+#       ├── .htaccess.sample    (This sample file - not used)
+#       └── ...
+#
+# Usage:
+#   1. Copy this file to the parent directory of MockAPI-PHP
+#   2. Rename it to .htaccess
+#   3. Change "MockAPI-PHP" in the RewriteRule to match your actual directory name
+#   4. Test your endpoints: https://example.com/api/users
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Set the base directory (usually /)
+    RewriteBase /
+
+    # Exclude existing files and directories from rewriting
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
