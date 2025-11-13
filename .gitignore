@@ -3,10 +3,13 @@ hooks/*.php
 *.log
 *.cache
 .env
+!.env.sample
+.htaccess
 cookies.txt
 
 .github/*
 !.github/workflows/ci.yml
+!.github/copilot-instructions.md
 
 responses/*
 !responses/errors/**

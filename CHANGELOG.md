@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.3.2] - 2025-11-13
+### Added
+- Added comprehensive deployment guide (`DEPLOYMENT.md`) for hosted environments
+  - Detailed instructions for Apache and Nginx deployment
+  - Subdirectory installation as the standard deployment method
+  - Document root installation guide
+  - Complete troubleshooting section
+- Added `.htaccess.sample` for Apache URL rewriting configuration
+  - Designed for parent directory placement in subdirectory installations
+  - Includes detailed comments and directory structure examples
+  - Simplified and optimized rewrite rules
+
+### Changed
+- Updated `.gitignore` to exclude user-specific `.htaccess` files
+- Enhanced `README.md` and `README_JP.md` with deployment guide references
+- Completely rewrote deployment documentation focusing on subdirectory installation
+
+### Improved
+- Clarified the distinction between subdirectory path and `BASE_PATH` in documentation
+- Enhanced Apache and Nginx configuration examples for various deployment scenarios
+- Improved troubleshooting guides with subdirectory-specific issues
+- Added visual directory structure diagrams throughout documentation
+
 ## [1.3.1] - 2025-07-17
 ### Added
 - Added the ability to define CORS headers in the .env environment variable.
@@ -36,6 +59,7 @@
 ---
 
 #### 🔗 GitHub Releases
+[1.3.2]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.3.2
 [1.3.1]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.3.1
 [1.2.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ka215/MockAPI-PHP/releases/tag/v1.1.0  
